@@ -1,8 +1,9 @@
 import React from 'react'
 import { Search, SearchButton, SearchTerm, Wrapper } from './SearchbarElements'
 import { FaSearch } from 'react-icons/fa'
+import Filter from './FilterModal/Filter'
 
-const SearchBar = () => {
+const Searchbar = (props) => {
   return (
     <Wrapper>
       <Search>
@@ -10,9 +11,10 @@ const SearchBar = () => {
         <SearchButton>
           <FaSearch/>
         </SearchButton>
+        <Filter {...props}/>
       </Search>
     </Wrapper>     
   )
 }
 
-export default SearchBar
+export default Searchbar

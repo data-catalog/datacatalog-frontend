@@ -9,24 +9,24 @@ import {
   NavHome,
   RightWrapper
 } from './NavbarElements';
-import SearchBar from '../SearchBar/SearchBar'
+import Searchbar from '../Searchbar/Searchbar'
 
-const Navbar = () => {
+const Navbar = (props) => {
   return (
     <>
       <Nav>
         <RightWrapper>
-          <NavHome to='/' activeStyle>
+          <NavHome to='/'>
             Data Catalog
           </NavHome>
-          <SearchBar/>
+          <Searchbar {...props}/>
         </RightWrapper>
         <Bars />
         <NavMenu>
-          <NavLink to='/about' activeStyle>
+          <NavLink to='/about'>
             Explore
           </NavLink>
-          <NavLink to='/services' activeStyle>
+          <NavLink to='/services'>
             Library
           </NavLink>
         </NavMenu>
