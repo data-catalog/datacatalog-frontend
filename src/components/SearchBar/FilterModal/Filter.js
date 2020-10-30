@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { FaFilter } from 'react-icons/fa'
-import FilterModal from './FilterModal'
 
 const FilterButton = styled.button`
   width: 40px;

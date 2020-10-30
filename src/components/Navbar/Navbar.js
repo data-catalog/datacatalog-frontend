@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Nav,
   NavLink,
@@ -10,6 +10,22 @@ import {
   RightWrapper
 } from './NavbarElements';
 import Searchbar from '../Searchbar/Searchbar'
+import { BsPerson } from 'react-icons/bs'
+import { SettingsMenu } from '../SettingsMenu/SettingsMenu'
+
+const SettingsButton = (props) => {
+
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <NavBtn>
+        <NavBtnLink onClick={() => setOpen(!open)}> {props.icon} </NavBtnLink>
+        {open && props.children}
+      </NavBtn>
+    </>
+  );
+};
 
 const Navbar = (props) => {
   return (
@@ -19,7 +35,7 @@ const Navbar = (props) => {
           <NavHome to='/'>
             Data Catalog
           </NavHome>
-          <Searchbar {...props}/>
+          <Searchbar {...props} />
         </RightWrapper>
         <Bars />
         <NavMenu>
@@ -30,9 +46,9 @@ const Navbar = (props) => {
             Library
           </NavLink>
         </NavMenu>
-        <NavBtn>
-          <NavBtnLink to='/signin'>Sign In</NavBtnLink>
-        </NavBtn>
+        <SettingsButton icon={<BsPerson/>}>
+          <SettingsMenu/>
+        </SettingsButton>
       </Nav>
     </>
   );

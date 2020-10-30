@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { MdClose } from 'react-icons/md';
 import FilterForm from './FilterForm';
@@ -56,7 +56,6 @@ const CloseModalButton = styled(MdClose)`
 `;
 
 export const FilterModal = ( {showModal, setShowModal} ) => {
-  const modalRef = useRef();
 
   const animation = useSpring({
     config: {
@@ -64,13 +63,7 @@ export const FilterModal = ( {showModal, setShowModal} ) => {
     },
     opacity: showModal ? 1 : 0,
     transform: showModal ? `translateY(0%)` : `translateY(-100%)`
-  });
-
-  const closeModal = e => {
-    if (modalRef.current === e.target) {
-      setShowModal(false);
-    }
-  };
+  });;
 
   const keyPress = useCallback(
     e => {

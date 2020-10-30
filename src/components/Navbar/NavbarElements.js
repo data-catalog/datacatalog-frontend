@@ -18,7 +18,7 @@ export const NavHome = styled(Link)`
 `;
 
 export const Nav = styled.nav`
-  background: #007382;
+  background: #095E6D;
   height: 80px;
   display: flex;
   justify-content: space-between;
@@ -79,12 +79,12 @@ export const NavBtn = styled.nav`
   }
 `;
 
-export const NavBtnLink = styled(Link)`
-  border-radius: 4px;
+export const NavBtnLink = styled.button`
+  border-radius: 50%;
   background: #00B4CC;
-  padding: 10px 22px;
+  padding: 10px 12px;
+  font-size: 150%;
   color: #fff;
-  font-weight: bold;
   outline: none;
   border: none;
   cursor: pointer;
