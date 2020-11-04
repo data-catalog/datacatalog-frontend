@@ -4,5 +4,6 @@ export const Colors = {
     detail_color: '#59858C',
     white: '#FFFFFF',
     header_color: '#05333B',
-    sidebar_color: '#007382'
+    sidebar_color: '#007382',
+    button_darker: '#0092A6'
 }

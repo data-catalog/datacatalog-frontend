@@ -22,8 +22,7 @@ export const WelcomeHolder = styled.div`
   border-radius: 8px;
   transition: background 300ms;
   padding: 0.5rem;
-  transform: translateX(17%);
-  //border-bottom: 1px solid white;
+  margin-left: 2rem;
 `;
 
 export const LeftIcon = styled.span`
@@ -33,7 +32,7 @@ export const LeftIcon = styled.span`
 `;
 
 export const Menu = styled.div`
-    &.menu-primary-enter {
+  &.menu-primary-enter {
     position: absolute;
     transform: translateX(-110%);
   }
@@ -73,10 +72,4 @@ export const OptionsHolder = styled.div`
   border-radius: 8px;
   overflow: hidden;
   transition: height 300ms ease;
-`;
-
-export const RightIcon = styled.span`
-  margin-left: auto;
-  font-size: 150%;
-  transform: translateY(10%);
 `;
