@@ -18,7 +18,7 @@ export const NavHome = styled(Link)`
 `;
 
 export const Nav = styled.nav`
-  background: #095E6D;
+  background: #095e6d;
   height: 80px;
   display: flex;
   justify-content: space-between;
@@ -81,7 +81,7 @@ export const NavBtn = styled.nav`
 
 export const NavBtnLink = styled.button`
   border-radius: 50%;
-  background: #00B4CC;
+  background: #00b4cc;
   padding: 10px 12px;
   font-size: 150%;
   color: #fff;

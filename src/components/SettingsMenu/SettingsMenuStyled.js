@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ItemHolder = styled.a`
   height: 50px;
@@ -10,7 +10,7 @@ export const ItemHolder = styled.a`
   padding: 0.5rem;
 
   &:hover {
-    background-color: ${props => props.theme.lightblue};
+    background-color: ${(props) => props.theme.lightblue};
   }
 `;
 
@@ -48,7 +48,7 @@ export const Menu = styled.div`
     transition: all 500ms ease;
   }
   &.menu-secondary-enter {
-  transform: translateX(110%);
+    transform: translateX(110%);
   }
   &.menu-secondary-enter-active {
     transform: translateX(0%);
@@ -67,8 +67,8 @@ export const OptionsHolder = styled.div`
   top: 80px;
   width: 200px;
   transform: translateX(-60%);
-  background-color: ${props => props.theme.sidebar_color};
-  border: 1px solid ${props => props.theme.white};
+  background-color: ${(props) => props.theme.sidebar_color};
+  border: 1px solid ${(props) => props.theme.white};
   border-radius: 8px;
   overflow: hidden;
   transition: height 300ms ease;
