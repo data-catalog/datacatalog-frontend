@@ -4,9 +4,17 @@ env:
   es6: true
 extends:
   - airbnb
+  - prettier
+  - prettier/react
 parserOptions:
   ecmaVersion: 2020
 rules:
+  prettier/prettier:
+    - error
+    - trailingComma: es5
+      singleQuote: true
+      printWidth: 120
+      endOfLine: auto
   semi: [error, always]
   quotes: [error, single]
   one-var: 0
@@ -22,3 +30,7 @@ rules:
     - error
     - required:
       some: [nesting, id]
+  react/prop-types: 0
+  react/jsx-props-no-spreading: 0
+plugins:
+  - prettier
