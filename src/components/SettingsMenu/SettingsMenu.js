@@ -20,7 +20,7 @@ const DropdownItem = ({ leftIcon, children, onClick }) => {
   );
 };
 
-const LoginItem = ({ leftIcon, children }) => {
+const LoginItem = ({ leftIcon, toggleMenu, children }) => {
   const [isLoginOpen, setLoginOpen] = useState(false);
 
   return (
@@ -41,13 +41,13 @@ const LoginItem = ({ leftIcon, children }) => {
         className="LoginModal"
         closeTimeoutMS={500}
       >
-        <LoginModal toggleLoginModal={setLoginOpen} />
+        <LoginModal toggleMenu={toggleMenu} toggleLoginModal={setLoginOpen} />
       </Modal>
     </>
   );
 };
 
-const SettingsMenu = () => {
+const SettingsMenu = ({ toggleMenu }) => {
   const [activeMenu, setActiveMenu] = useState('main');
   const [optionsHeight, setOptionsHeight] = useState(null);
 
@@ -68,7 +68,7 @@ const SettingsMenu = () => {
         >
           <Menu>
             <WelcomeHolder>Welcome, User!</WelcomeHolder>
-            <LoginItem leftIcon={<BsPerson />} goToModal="login">
+            <LoginItem leftIcon={<BsPerson />} toggleMenu={toggleMenu} goToModal="login">
               Log in!
             </LoginItem>
             <DropdownItem leftIcon={<BsGear />} onClick={() => setActiveMenu('settings')}>
