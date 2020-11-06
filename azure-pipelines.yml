@@ -8,7 +8,7 @@ trigger:
 
 variables:
   uiSource: 'src'
-  uiBuild: '${uiSource}/build'
+  uiBuild: '$(uiSource)/build'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -16,11 +16,11 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '10.x'
+    versionSpec: '12.x'
   displayName: 'Install Node.js'
 
 - script: |
-    pushd ${uiSource}
+    pushd $(uiSource)
     npm install
     npm run build
     popd
