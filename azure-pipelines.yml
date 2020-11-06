@@ -5,10 +5,11 @@
 
 trigger:
 - master
+- citesting
 
 variables:
   uiSource: 'src'
-  uiBuild: '$(uiSource)/build'
+  uiBuild: 'build'
 
 pool:
   vmImage: 'ubuntu-latest'
