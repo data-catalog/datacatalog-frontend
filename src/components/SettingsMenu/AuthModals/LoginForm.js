@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
 import { Form, FormGroup, Input, Button } from '../../styles/Form';
-import Api from '../../../apis/api';
+import { useAuth } from '../../../context/AuthContext';
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required('Username is required.'),
@@ -12,26 +12,28 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginForm = ({ toggleMenu, toggleModal }) => {
+  const { login } = useAuth();
+
   const { register, handleSubmit, errors, setError, clearErrors, formState } = useForm({
     resolver: yupResolver(validationSchema),
   });
   const { isSubmitting } = formState;
 
   const onSubmit = async (data) => {
-    return Api.post('users/login', JSON.stringify(data))
-      .then((res) => {
-        console.log(res);
-        toggleModal(false);
+    try {
+      await login(data);
 
-        setTimeout(() => {
-          toggleMenu(false);
-        }, 500);
-      })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          setError('auth', { type: 'manual', message: 'Username or password is incorrect.' });
-        }
-      });
+      toggleModal(false);
+      setTimeout(() => {
+        toggleMenu(false);
+      }, 500);
+    } catch (err) {
+      if (err.response?.status === 401) {
+        setError('auth', { type: 'manual', message: 'Username or password is incorrect.' });
+      } else {
+        setError('auth', { type: 'manual', message: 'Something went wrong, please try again.' });
+      }
+    }
   };
 
   return (
