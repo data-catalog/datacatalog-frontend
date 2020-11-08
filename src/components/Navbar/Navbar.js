@@ -13,7 +13,7 @@ const SettingsButton = (props) => {
     <>
       <NavBtn>
         <NavBtnLink onClick={() => setOpen(!open)}> {icon} </NavBtnLink>
-        {open && children}
+        {open && children(setOpen)}
       </NavBtn>
     </>
   );
@@ -32,9 +32,7 @@ const Navbar = (props) => {
           <NavLink to="/about">Explore</NavLink>
           <NavLink to="/services">Library</NavLink>
         </NavMenu>
-        <SettingsButton icon={<BsPerson />}>
-          <SettingsMenu />
-        </SettingsButton>
+        <SettingsButton icon={<BsPerson />}>{(toggleMenu) => <SettingsMenu toggleMenu={toggleMenu} />}</SettingsButton>
       </Nav>
     </>
   );
