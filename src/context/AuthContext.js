@@ -9,14 +9,16 @@ const AuthProvider = (props) => {
   const login = async (data) => {
     const response = await Api.post('users/login', JSON.stringify(data));
 
-    localStorage.setItem('jwt_token', JSON.stringify(response.data.token));
+    Api.defaults.headers.Authorization = `Bearer ${response.data.token}`;
+
+    localStorage.setItem('access_token', response.data.token);
     localStorage.setItem('user', JSON.stringify(response.data.user));
 
     setUser(response.data.user);
   };
 
   const logout = () => {
-    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('access_token');
     localStorage.removeItem('user');
 
     setUser(null);
