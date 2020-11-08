@@ -97,7 +97,7 @@ const LoginModal = ({ toggleMenu, toggleLoginModal }) => {
         >
           <ModalAnimator>
             <FormHeader>Please Register</FormHeader>
-            <RegisterForm setActiveModal={setActiveModal} />
+            <RegisterForm toggleModal={toggleLoginModal} toggleMenu={toggleMenu} setActiveModal={setActiveModal} />
             <p>
               Don&apos;t have an account yet? Join&nbsp;
               <StyledLink onClick={() => setActiveModal('register')}>here</StyledLink>!
