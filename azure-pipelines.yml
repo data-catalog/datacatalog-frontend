@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- development
 
 variables:
   uiSource: 'src'
