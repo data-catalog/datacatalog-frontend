@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-import { Form, FormGroup, Input, Button } from '../../styles/Form';
+import { Form, FormGroup, Input, Button, InputContainer, ErrorTooltip } from '../../styles/Form';
 import { useAuth } from '../../../context/AuthContext';
 
 const validationSchema = Yup.object().shape({
@@ -39,20 +39,28 @@ const LoginForm = ({ toggleMenu, toggleModal }) => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormGroup>
-        <Input type="text" name="username" placeholder="Username" ref={register} onChange={() => clearErrors('auth')} />
-        {errors.username && errors.username.message}
+        <InputContainer error={errors.username}>
+          <Input
+            type="text"
+            name="username"
+            placeholder="Username"
+            ref={register}
+            onChange={() => clearErrors('auth')}
+          />
+          {errors.username && <ErrorTooltip message={errors.username.message} />}
+        </InputContainer>
 
-        <Input
-          type="password"
-          name="password"
-          placeholder="Password"
-          ref={register}
-          onChange={() => clearErrors('auth')}
-        />
-        {errors.password && errors.password.message}
+        <InputContainer error={errors.password}>
+          <Input
+            type="password"
+            name="password"
+            placeholder="Password"
+            ref={register}
+            onChange={() => clearErrors('auth')}
+          />
+          {errors.password && <ErrorTooltip message={errors.password.message} />}
+        </InputContainer>
       </FormGroup>
-
-      {errors.auth && errors.auth.message}
       <Button type="submit" disabled={isSubmitting}>
         Log in!
       </Button>

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-import { Form, FormGroup, Input, Button } from '../../styles/Form';
+import { Form, FormGroup, Input, Button, InputContainer, ErrorTooltip } from '../../styles/Form';
 import Api from '../../../apis/api';
 import { useAuth } from '../../../context/AuthContext';
 
@@ -49,21 +49,31 @@ const RegisterForm = ({ toggleMenu, toggleModal }) => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)} onChange={() => clearErrors('submit')} noValidate>
       <FormGroup>
-        <Input placeholder="Username" type="text" name="username" ref={register} />
-        {errors.username && errors.username.message}
+        <InputContainer error={errors.username}>
+          <Input placeholder="Username" type="text" name="username" ref={register} />
+          {errors.username && <ErrorTooltip message={errors.username.message} />}
+        </InputContainer>
 
-        <Input placeholder="E-mail address" type="email" name="email" ref={register} />
-        {errors.email && errors.email.message}
+        <InputContainer error={errors.email}>
+          <Input placeholder="E-mail address" type="email" name="email" ref={register} />
+          {errors.email && <ErrorTooltip message={errors.email.message} />}
+        </InputContainer>
 
-        <Input placeholder="First name" type="text" name="firstName" ref={register} />
+        <InputContainer>
+          <Input placeholder="First name" type="text" name="firstName" ref={register} />
+        </InputContainer>
 
-        <Input placeholder="Last name" type="text" name="lastName" ref={register} />
+        <InputContainer>
+          <Input placeholder="Last name" type="text" name="lastName" ref={register} />
+        </InputContainer>
 
-        <Input type="password" name="password" placeholder="Password" ref={register} />
-        {errors.password && errors.password.message}
+        <InputContainer error={errors.password}>
+          <Input type="password" name="password" placeholder="Password" ref={register} />
+          {errors.password && <ErrorTooltip message={errors.password.message} />}
+        </InputContainer>
       </FormGroup>
 
-      {errors.submit && errors.submit.message}
+      {/* {errors.submit && errors.submit.message} */}
       <Button type="submit" disabled={isSubmitting}>
         Register!
       </Button>

@@ -47,7 +47,13 @@ export const ModalAnimator = styled.div`
 `;
 
 const FormHeader = styled.h2`
-  margin-bottom: 30px;
+  color: white;
+  text-align: center;
+`;
+
+const InfoP = styled.p`
+  color: white;
+  text-align: center;
 `;
 
 const StyledLink = styled.a`
@@ -81,10 +87,10 @@ const LoginModal = ({ toggleMenu, toggleLoginModal }) => {
           <ModalAnimator>
             <FormHeader>Please Log in</FormHeader>
             <LoginForm toggleModal={toggleLoginModal} toggleMenu={toggleMenu} setActiveModal={setActiveModal} />
-            <p>
+            <InfoP>
               Don&apos;t have an account yet? Join&nbsp;
               <StyledLink onClick={() => setActiveModal('register')}>here</StyledLink>!
-            </p>
+            </InfoP>
           </ModalAnimator>
         </CSSTransition>
 
@@ -98,10 +104,10 @@ const LoginModal = ({ toggleMenu, toggleLoginModal }) => {
           <ModalAnimator>
             <FormHeader>Please Register</FormHeader>
             <RegisterForm toggleModal={toggleLoginModal} toggleMenu={toggleMenu} setActiveModal={setActiveModal} />
-            <p>
+            <InfoP>
               Don&apos;t have an account yet? Join&nbsp;
-              <StyledLink onClick={() => setActiveModal('register')}>here</StyledLink>!
-            </p>
+              <StyledLink onClick={() => setActiveModal('login')}>here</StyledLink>!
+            </InfoP>
           </ModalAnimator>
         </CSSTransition>
       </ModalContainer>

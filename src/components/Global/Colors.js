@@ -7,4 +7,5 @@ export const Colors = {
   header_color: '#05333B',
   sidebar_color: '#007382',
   button_darker: '#0092A6',
+  input_error: 'rgba(255, 0, 0, 0.8)',
 };
