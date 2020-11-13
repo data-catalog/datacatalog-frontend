@@ -1,121 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { usePopper } from 'react-popper';
-import Tippy from '@tippyjs/react/headless';
-import { BsExclamationCircle } from 'react-icons/bs';
 
-import styled from 'styled-components';
-import { Form, FormGroup, Input, Button } from '../../styles/Form';
+import { Form, FormGroup, Input, Button, InputContainer, ErrorTooltip } from '../../styles/Form';
 import { useAuth } from '../../../context/AuthContext';
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required('Username is required.'),
   password: Yup.string().required('Password is required'),
 });
-
-const PopperContainer = styled.div`
-  background: #ed3e3e;
-  color: white;
-  font-weight: bold;
-  padding: 4px 8px;
-  font-size: 13px;
-  border-radius: 4px;
-  z-index: 10;
-  max-width: 200px;
-`;
-
-const Arrow = styled.div`
-  &::before {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    z-index: -1;
-  }
-
-  ::before {
-    content: '';
-    transform: rotate(45deg);
-    background: red;
-  }
-`;
-
-const ExclamationMark = styled.span`
-  margin-right: 0.5rem;
-  font-size: 150%;
-  color: red;
-  transform: translateY(10%);
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  border-radius: 8px;
-  border: ${(props) => (props.error ? '2px solid red' : null)};
-  padding: 0.6rem;
-  background-color: white;
-  background-size: 50%;
-  margin-bottom: 5%;
-`;
-
-const UsernameInput = ({ message }) => {
-  return (
-    <>
-      <InputContainer>
-        <Input
-          type="text"
-          name="username"
-          placeholder="Username" /* ref={register} onChange={() => clearErrors('auth')} */
-        />
-        <Tippy
-          placement="top-end"
-          render={(attrs) => (
-            <PopperContainer {...attrs}>
-              The username is fucked man!
-              <Arrow data-popper-arrow="" />
-            </PopperContainer>
-          )}
-        >
-          <ExclamationMark>
-            <BsExclamationCircle />
-          </ExclamationMark>
-        </Tippy>
-      </InputContainer>
-    </>
-  );
-};
-
-const PasswordInput = () => {
-  return (
-    <>
-      <InputContainer>
-        <Input
-          type="password"
-          name="password"
-          placeholder="Password"
-          // ref={register}
-          // onChange={() => clearErrors('auth')}
-        />
-        {/* {errors.password && errors.password.message} */}
-        <Tippy
-          placement="top-end"
-          render={(attrs) => (
-            <PopperContainer {...attrs}>
-              The username is fucked man!
-              <Arrow data-popper-arrow="" />
-            </PopperContainer>
-          )}
-        >
-          <ExclamationMark>
-            <BsExclamationCircle />
-          </ExclamationMark>
-        </Tippy>
-      </InputContainer>
-    </>
-  );
-};
 
 const LoginForm = ({ toggleMenu, toggleModal }) => {
   const { login } = useAuth();
@@ -153,28 +47,20 @@ const LoginForm = ({ toggleMenu, toggleModal }) => {
             ref={register}
             onChange={() => clearErrors('auth')}
           />
-          {errors.username && (
-            <Tippy
-              placement="top-end"
-              render={(attrs) => (
-                <PopperContainer {...attrs}>
-                  {errors.username.message}
-                  <Arrow data-popper-arrow="" />
-                </PopperContainer>
-              )}
-            >
-              <ExclamationMark>
-                <BsExclamationCircle />
-              </ExclamationMark>
-            </Tippy>
-          )}
+          {errors.username && <ErrorTooltip message={errors.username.message} />}
         </InputContainer>
-        {/* {errors.username && (
-          <ErrorContainer referenceElement={nameFieldReference} errorMessage={errors.username.message} />
-        )} */}
-        <PasswordInput />
+
+        <InputContainer error={errors.password}>
+          <Input
+            type="password"
+            name="password"
+            placeholder="Password"
+            ref={register}
+            onChange={() => clearErrors('auth')}
+          />
+          {errors.password && <ErrorTooltip message={errors.password.message} />}
+        </InputContainer>
       </FormGroup>
-      {}
       <Button type="submit" disabled={isSubmitting}>
         Log in!
       </Button>
