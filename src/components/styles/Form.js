@@ -12,16 +12,22 @@ const Form = styled.form`
 
 const FormGroup = styled.div`
   margin-bottom: 10px;
+  text-align: center;
+  width: 100%;
 `;
 
 const Input = styled.input`
-  display: block;
   font-size: 16px;
-  height: auto;
-  padding: 10px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   margin-top: 5px;
+  padding-right: 10%;
+  transform: translateY(-5%);
+  border: none;
+
+  &.error {
+    border-color: red;
+  }
 
   &:focus {
     z-index: 2;
