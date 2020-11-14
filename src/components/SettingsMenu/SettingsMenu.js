@@ -61,7 +61,13 @@ const FirstPageSettings = ({ user, logout, setActiveMenu, toggleMenu }) => {
         <DropdownItem leftIcon={<BsGear />} onClick={() => setActiveMenu('settings')}>
           Settings
         </DropdownItem>
-        <DropdownItem leftIcon={<BiKey />} onClick={logout}>
+        <DropdownItem
+          leftIcon={<BiKey />}
+          onClick={() => {
+            logout();
+            toggleMenu(false);
+          }}
+        >
           Log out
         </DropdownItem>
       </>
