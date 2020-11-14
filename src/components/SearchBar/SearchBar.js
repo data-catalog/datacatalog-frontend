@@ -3,7 +3,7 @@ import { FaSearch } from 'react-icons/fa';
 import { Search, SearchButton, SearchTerm, Wrapper } from './SearchbarElements';
 import Filter from './FilterModal/Filter';
 
-const Searchbar = (props) => {
+const Searchbar = () => {
   return (
     <Wrapper>
       <Search>
@@ -11,7 +11,7 @@ const Searchbar = (props) => {
         <SearchButton>
           <FaSearch />
         </SearchButton>
-        <Filter {...props} />
+        <Filter />
       </Search>
     </Wrapper>
   );
