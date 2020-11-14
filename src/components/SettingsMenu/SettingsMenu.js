@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BsPerson, BsGear, BsChevronDoubleLeft, BsQuestionCircle, BsClipboardData } from 'react-icons/bs';
-import { BiUserPin } from 'react-icons/bi';
+import { BiUserPin, BiKey } from 'react-icons/bi';
 import { AiOutlineMail, AiOutlineSmile } from 'react-icons/ai';
 import { ThemeProvider } from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
@@ -48,7 +48,7 @@ const LoginItem = ({ leftIcon, toggleMenu, children }) => {
   );
 };
 
-const FirstPageSettings = ({ user, setActiveMenu, toggleMenu }) => {
+const FirstPageSettings = ({ user, logout, setActiveMenu, toggleMenu }) => {
   if (user) {
     return (
       <>
@@ -60,6 +60,9 @@ const FirstPageSettings = ({ user, setActiveMenu, toggleMenu }) => {
         </WelcomeHolder>
         <DropdownItem leftIcon={<BsGear />} onClick={() => setActiveMenu('settings')}>
           Settings
+        </DropdownItem>
+        <DropdownItem leftIcon={<BiKey />} onClick={logout}>
+          Log out
         </DropdownItem>
       </>
     );
@@ -83,7 +86,7 @@ const FirstPageSettings = ({ user, setActiveMenu, toggleMenu }) => {
 const SettingsMenu = ({ toggleMenu }) => {
   const [activeMenu, setActiveMenu] = useState('main');
   const [optionsHeight, setOptionsHeight] = useState(null);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const calculateHeight = (element) => {
     const height = element.offsetHeight;
@@ -101,7 +104,7 @@ const SettingsMenu = ({ toggleMenu }) => {
           onEnter={calculateHeight}
         >
           <Menu>
-            <FirstPageSettings user={user} setActiveMenu={setActiveMenu} toggleMenu={toggleMenu} />
+            <FirstPageSettings user={user} logout={logout} setActiveMenu={setActiveMenu} toggleMenu={toggleMenu} />
           </Menu>
         </CSSTransition>
 
