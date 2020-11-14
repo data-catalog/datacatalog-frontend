@@ -102,6 +102,7 @@ const InputContainer = styled.div`
   background-color: white;
   background-size: 50%;
   margin-bottom: 5%;
+  width: 100%;
 `;
 
 const ErrorTooltip = ({ message }) => {
