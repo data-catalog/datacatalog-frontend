@@ -64,6 +64,7 @@ const LoginForm = ({ toggleMenu, toggleModal }) => {
       <Button type="submit" disabled={isSubmitting}>
         Log in!
       </Button>
+      <div>{errors.auth && errors.auth.message}</div>
     </Form>
   );
 };

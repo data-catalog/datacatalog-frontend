@@ -29,10 +29,6 @@ const Input = styled.input`
   transform: translateY(-5%);
   border: none;
 
-  &.error {
-    border-color: red;
-  }
-
   &:focus {
     z-index: 2;
   }
