@@ -52,7 +52,7 @@ const SelectOption = styled.option`
 
 const FilterForm = styled.div``;
 
-const Form = styled.form`
+const Form = styled.div`
   width: 25em;
   height: 15em;
   padding: 15px 35px 40px;
@@ -70,8 +70,7 @@ const Input = styled.input`
   height: 1.5em;
   background-color: ${(props) => props.theme.lightblue};
   color: white;
-  padding: 12px 20px;
-  margin: 8px 0;
+  padding: 5px 10px;
 
   ::placeholder {
     color: white;
