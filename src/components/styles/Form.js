@@ -28,6 +28,7 @@ const Input = styled.input`
   padding-right: 10%;
   transform: translateY(-5%);
   border: none;
+  min-width: 0;
 
   &:focus {
     z-index: 2;
@@ -90,6 +91,7 @@ const ExclamationMark = styled.span`
   font-size: 1em;
   color: ${(props) => props.theme.input_error};
   transform: translate(50%, 15%);
+  min-width: 0;
 `;
 
 const InputContainer = styled.div`
@@ -102,7 +104,7 @@ const InputContainer = styled.div`
   background-color: white;
   background-size: 50%;
   margin-bottom: 5%;
-  width: 100%;
+  width: 92%;
 `;
 
 const ErrorTooltip = ({ message }) => {
