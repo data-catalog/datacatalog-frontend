@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  width: 50%;
+  width: 60%;
   position: relative;
+  transform: translateX(36%);
 `;
 
 export const Search = styled.div`
@@ -12,23 +13,23 @@ export const Search = styled.div`
 `;
 
 export const SearchTerm = styled.input`
-  width: 100%;
-  border: 3px solid #00b4cc;
+  flex: 0 1 80%;
+  border: 1px solid white;
+  background-color: #00b4cc;
   border-right: none;
   padding: 5px;
-  height: 20px;
   border-radius: 5px 0 0 5px;
   outline: none;
-  color: #000000;
+  color: white;
 `;
 
 export const SearchButton = styled.button`
-  width: 40px;
-  height: 36px;
-  border: 1px solid #00b4cc;
+  flex: 0 1 10%;
+  border: 1px solid white;
+  border-radius: 0px;
   background: #00b4cc;
-  text-align: center;
+  padding-top: 1px;
   color: #fff;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 15px;
 `;
