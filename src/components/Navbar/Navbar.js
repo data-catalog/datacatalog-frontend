@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BsPerson } from 'react-icons/bs';
+import { BsFillPersonFill } from 'react-icons/bs';
 import { useAuth } from '../../context/AuthContext';
 import {
   Nav,
@@ -48,7 +48,7 @@ const Navbar = (props) => {
           <NavLink to="/about">Explore</NavLink>
           <NavLink to="/services">Library</NavLink>
         </NavMenu>
-        <SettingsButton user={user} icon={<BsPerson />}>
+        <SettingsButton user={user} icon={<BsFillPersonFill />}>
           {(toggleMenu) => <SettingsMenu toggleMenu={toggleMenu} />}
         </SettingsButton>
       </Nav>

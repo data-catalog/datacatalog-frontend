@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 
 const FilterButton = styled.button`
-  width: 40px;
-  height: 36px;
-  border: 1px solid #00b4cc;
+  flex: 0 1 10%;
+  border: 1px solid white;
+  border-left: none;
   background: #00b4cc;
-  text-align: center;
+  padding-top: 1px;
   color: #fff;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 15px;
 `;
 
 const ModalContainer = styled.div`

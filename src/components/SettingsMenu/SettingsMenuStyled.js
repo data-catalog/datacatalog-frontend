@@ -72,4 +72,6 @@ export const OptionsHolder = styled.div`
   border-radius: 8px;
   overflow: hidden;
   transition: height 300ms ease;
+  z-index: 100;
+  color: ${(props) => props.theme.white};
 `;
