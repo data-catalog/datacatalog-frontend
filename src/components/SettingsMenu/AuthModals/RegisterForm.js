@@ -41,6 +41,7 @@ const RegisterForm = ({ toggleMenu, toggleModal }) => {
       if (err.response?.status === 422) {
         setError('auth', { type: 'manual', message: 'The provided input is not valid.' });
       } else {
+        console.log(err.response?.status);
         setError('auth', { type: 'manual', message: 'Something went wrong, please try again.' });
       }
     }

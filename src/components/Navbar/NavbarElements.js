@@ -18,8 +18,9 @@ export const NavHome = styled(Link)`
 `;
 
 export const Nav = styled.nav`
+  border-bottom: 1px solid white;
   background: #095e6d;
-  height: 80px;
+  height: 5rem;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem;
@@ -73,7 +74,6 @@ export const NavMenu = styled.div`
 export const NavBtn = styled.nav`
   display: flex;
   align-items: center;
-  margin-right: 24px;
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -96,4 +96,17 @@ export const NavBtnLink = styled.button`
     background: #fff;
     color: #010606;
   }
+`;
+
+export const LeftWrapper = styled.div`
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row-reverse;
+`;
+
+export const UsernameContainer = styled.div`
+  color: white;
+  font-size: 110%;
 `;

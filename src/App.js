@@ -1,26 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
-import FilterModal from './components/SearchBar/FilterModal/FilterModal';
 import { AuthProvider } from './context/AuthContext';
+import AppWrapper from './components/Main/Main';
 
 const App = () => {
-  const [showModal, setShowModal] = useState(false);
-
-  const openModal = () => {
-    setShowModal((prev) => !prev);
-  };
-
   return (
     <AuthProvider>
       <Router>
-        <Navbar openModal={openModal} />
-        <FilterModal showModal={showModal} setShowModal={setShowModal} />
+        <Navbar />
         <Switch>
           <Route path="/" />
         </Switch>
       </Router>
+
+      <AppWrapper />
     </AuthProvider>
   );
 };

@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
 }
 
 code {
@@ -13,13 +14,23 @@ code {
 }
 
 .LoginModal {
-  position: absolute;
+  position: fixed;
   top: 15%;
   left: 40%;
   right: auto;
   bottom: auto;
   max-width: 500px;
   max-height: 500px;
+}
+
+.FilterModal {
+  position: absolute;
+  top: 15%;
+  left: 37.5%;
+  right: auto;
+  bottom: auto;
+  max-width: 500px;
+  max-height: 300px;
 }
 
 .ReactModal__Overlay {
@@ -34,4 +45,14 @@ code {
 
 .ReactModal__Overlay--before-close{
   opacity: 0;
+}
+
+@keyframes fadein {
+  0% {
+      opacity: 0;
+  }
+
+  100% {
+      opacity: 1;
+  }
 }

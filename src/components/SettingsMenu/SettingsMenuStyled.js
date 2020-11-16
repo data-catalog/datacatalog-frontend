@@ -19,10 +19,10 @@ export const WelcomeHolder = styled.div`
   display: flex;
   align-items: center;
   justify-items: center;
+  text-align: center;
   border-radius: 8px;
   transition: background 300ms;
   padding: 0.5rem;
-  margin-left: 2rem;
 `;
 
 export const LeftIcon = styled.span`
@@ -72,4 +72,6 @@ export const OptionsHolder = styled.div`
   border-radius: 8px;
   overflow: hidden;
   transition: height 300ms ease;
+  z-index: 100;
+  color: ${(props) => props.theme.white};
 `;

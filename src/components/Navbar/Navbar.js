@@ -1,25 +1,41 @@
 import React, { useState } from 'react';
-import { BsPerson } from 'react-icons/bs';
-import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink, NavHome, RightWrapper } from './NavbarElements';
+import { BsFillPersonFill } from 'react-icons/bs';
+import { useAuth } from '../../context/AuthContext';
+import {
+  Nav,
+  NavLink,
+  Bars,
+  NavMenu,
+  NavBtn,
+  NavBtnLink,
+  NavHome,
+  RightWrapper,
+  LeftWrapper,
+  UsernameContainer,
+} from './NavbarElements';
 import Searchbar from '../SearchBar/SearchBar';
 import SettingsMenu from '../SettingsMenu/SettingsMenu';
 
 const SettingsButton = (props) => {
   const [open, setOpen] = useState(false);
 
-  const { icon, children } = props;
+  const { user, icon, children } = props;
 
   return (
     <>
-      <NavBtn>
-        <NavBtnLink onClick={() => setOpen(!open)}> {icon} </NavBtnLink>
-        {open && children(setOpen)}
-      </NavBtn>
+      <LeftWrapper>
+        <NavBtn>
+          <NavBtnLink onClick={() => setOpen(!open)}> {icon} </NavBtnLink>
+          {open && children(setOpen)}
+        </NavBtn>
+        {user && <UsernameContainer>{user.username}</UsernameContainer>}
+      </LeftWrapper>
     </>
   );
 };
 
 const Navbar = (props) => {
+  const { user } = useAuth();
   return (
     <>
       <Nav>
@@ -32,7 +48,9 @@ const Navbar = (props) => {
           <NavLink to="/about">Explore</NavLink>
           <NavLink to="/services">Library</NavLink>
         </NavMenu>
-        <SettingsButton icon={<BsPerson />}>{(toggleMenu) => <SettingsMenu toggleMenu={toggleMenu} />}</SettingsButton>
+        <SettingsButton user={user} icon={<BsFillPersonFill />}>
+          {(toggleMenu) => <SettingsMenu toggleMenu={toggleMenu} />}
+        </SettingsButton>
       </Nav>
     </>
   );

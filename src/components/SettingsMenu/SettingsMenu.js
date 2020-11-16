@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { BsPerson, BsGear, BsChevronDoubleLeft } from 'react-icons/bs';
-import { BiUserPin } from 'react-icons/bi';
-import { AiOutlineMail } from 'react-icons/ai';
+import { BsPerson, BsGear, BsChevronDoubleLeft, BsQuestionCircle, BsClipboardData } from 'react-icons/bs';
+import { BiUserPin, BiKey } from 'react-icons/bi';
+import { AiOutlineMail, AiOutlineSmile } from 'react-icons/ai';
 import { ThemeProvider } from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 import Modal from 'react-modal';
 import { ItemHolder, LeftIcon, OptionsHolder, Menu, WelcomeHolder } from './SettingsMenuStyled';
 import { Colors } from '../Global/Colors';
 import LoginModal from './AuthModals/LoginModal';
+import { useAuth } from '../../context/AuthContext';
 
 Modal.setAppElement('#root');
 
@@ -47,9 +48,51 @@ const LoginItem = ({ leftIcon, toggleMenu, children }) => {
   );
 };
 
+const FirstPageSettings = ({ user, logout, setActiveMenu, toggleMenu }) => {
+  if (user) {
+    return (
+      <>
+        <WelcomeHolder>
+          <LeftIcon>
+            <AiOutlineSmile />
+          </LeftIcon>
+          Welcome, {user.username}!
+        </WelcomeHolder>
+        <DropdownItem leftIcon={<BsGear />} onClick={() => setActiveMenu('settings')}>
+          Settings
+        </DropdownItem>
+        <DropdownItem
+          leftIcon={<BiKey />}
+          onClick={() => {
+            logout();
+            toggleMenu(false);
+          }}
+        >
+          Log out
+        </DropdownItem>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <WelcomeHolder>
+        <LeftIcon>
+          <BsQuestionCircle />
+        </LeftIcon>
+        Log in to see more features!
+      </WelcomeHolder>
+      <LoginItem leftIcon={<BsPerson />} toggleMenu={toggleMenu} goToModal="login">
+        Log in!
+      </LoginItem>
+    </>
+  );
+};
+
 const SettingsMenu = ({ toggleMenu }) => {
   const [activeMenu, setActiveMenu] = useState('main');
   const [optionsHeight, setOptionsHeight] = useState(null);
+  const { user, logout } = useAuth();
 
   const calculateHeight = (element) => {
     const height = element.offsetHeight;
@@ -67,13 +110,7 @@ const SettingsMenu = ({ toggleMenu }) => {
           onEnter={calculateHeight}
         >
           <Menu>
-            <WelcomeHolder>Welcome, User!</WelcomeHolder>
-            <LoginItem leftIcon={<BsPerson />} toggleMenu={toggleMenu} goToModal="login">
-              Log in!
-            </LoginItem>
-            <DropdownItem leftIcon={<BsGear />} onClick={() => setActiveMenu('settings')}>
-              Settings
-            </DropdownItem>
+            <FirstPageSettings user={user} logout={logout} setActiveMenu={setActiveMenu} toggleMenu={toggleMenu} />
           </Menu>
         </CSSTransition>
 
@@ -88,6 +125,7 @@ const SettingsMenu = ({ toggleMenu }) => {
             <DropdownItem leftIcon={<BsChevronDoubleLeft />} onClick={() => setActiveMenu('main')}>
               Back
             </DropdownItem>
+            <DropdownItem leftIcon={<BsClipboardData />}>Import dataset</DropdownItem>
             <DropdownItem leftIcon={<BiUserPin />}>Change Username</DropdownItem>
             <DropdownItem leftIcon={<AiOutlineMail />}>Change Email</DropdownItem>
           </Menu>
