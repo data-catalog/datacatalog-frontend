@@ -73,4 +73,5 @@ export const OptionsHolder = styled.div`
   overflow: hidden;
   transition: height 300ms ease;
   z-index: 100;
+  color: ${(props) => props.theme.white};
 `;

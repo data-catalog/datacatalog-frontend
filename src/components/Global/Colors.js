@@ -8,4 +8,5 @@ export const Colors = {
   sidebar_color: '#007382',
   button_darker: '#0092A6',
   input_error: 'rgba(255, 0, 0, 0.8)',
+  font_color: '#FFFFFF',
 };

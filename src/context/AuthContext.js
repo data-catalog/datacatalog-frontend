@@ -21,6 +21,8 @@ const AuthProvider = (props) => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
 
+    delete Api.defaults.headers.Authorization;
+
     setUser(null);
   };
 
