@@ -4,6 +4,8 @@ import Collapsible from 'react-collapsible';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { RiArrowDropDownLine } from 'react-icons/ri';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 import Sidebar from '../Sidebar/Sidebar';
 import { Colors } from '../Global/Colors';
@@ -68,49 +70,61 @@ const CustomHeader = styled.div`
   border: none;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid ${(props) => props.theme.back_color}; ;
+  border-bottom: 1px solid ${(props) => props.theme.back_color};
 `;
 
 const HeaderOwnerIcon = styled(FaRegUserCircle)`
+  flex: 0 0 5%;
   color: ${(props) => props.theme.white};
   transform: translateY(5%);
   font-size: 250%;
 `;
 
 const HeaderOwnerInfo = styled.div`
+  flex: 0 1 40%;
   font-size: 110%;
   margin-left: 1%;
 `;
 
 const HeaderUploadDate = styled.div`
+  flex: 0 0 20%;
   font-size: 110%;
-  margin-left: 40%;
 `;
 
 const HeaderSize = styled.div`
+  flex: 0 0 10%;
   font-size: 110%;
-  margin-left: 1%;
+  margin-left: 3%;
+`;
+
+const HeaderSpacing = styled.div`
+  flex: 0 1 10%;
 `;
 
 const HeaderHamburger = styled(GiHamburgerMenu)`
+  flex: 0 0 5%;
   color: ${(props) => props.theme.white};
   font-size: 200%;
-  margin-left: 10%;
 `;
 
 const HeaderArrow = styled(RiArrowDropDownLine)`
+  flex: 0 0 5%;
   color: ${(props) => props.theme.white};
   font-size: 250%;
 `;
 
-const DataHeader = () => {
+const DataHeader = ({ data }) => {
   return (
     <>
       <CustomHeader>
         <HeaderOwnerIcon />
-        <HeaderOwnerInfo>username/datasetname</HeaderOwnerInfo>
-        <HeaderUploadDate>Upload date: 2020.06.09. 04:20 GMT</HeaderUploadDate>
-        <HeaderSize>Size: 156 MB</HeaderSize>
+        <HeaderOwnerInfo>
+          {/* {data.id}/{data.name} */}
+          Ownername/{data.name}
+        </HeaderOwnerInfo>
+        <HeaderUploadDate>Upload date: {data.updatedAt}</HeaderUploadDate>
+        <HeaderSize>Size: {data.size}</HeaderSize>
+        <HeaderSpacing />
         <HeaderHamburger />
         <HeaderArrow />
       </CustomHeader>
@@ -118,68 +132,77 @@ const DataHeader = () => {
   );
 };
 
-const DataDetails = () => {
+const DataDetails = ({ data }) => {
   return (
     <DetailsContainer>
       <DetailsRow>
-        <DetailsText>
-          Description goes here. The description is usually a really really long text so it is important to consider
-          that it will probably span a lot of rows. Description goes here. The description is usually a really really
-          long text so it is important to consider that it will probably span a lot of rows. Description goes here. The
-          description is usually a really really long text so it is important to consider that it will probably span a
-          lot of rows. Description goes here. The description is usually a really really long text so it is important to
-          consider that it will probably span a lot of rows.
-        </DetailsText>
+        <DetailsText>{data.description}</DetailsText>
       </DetailsRow>
       <DetailsRow>
-        <DetailsText>URL: https://www.example.com/exampleasset</DetailsText>
+        <DetailsText>URL: {data.location.parameters[0].value}</DetailsText>
       </DetailsRow>
     </DetailsContainer>
   );
 };
 
-const AppWrapper = () => {
+const AppWrapper = (props) => {
   return (
     <>
       <ThemeProvider theme={Colors}>
         <WindowContainer>
           <Sidebar />
-          <Main />
+          <Main {...props} />
         </WindowContainer>
       </ThemeProvider>
     </>
   );
 };
 
-const InfoDiv = () => {
-  return (
-    <>
-      <Collapsible trigger={<DataHeader />}>
-        <DataDetails />
-      </Collapsible>
-      <Collapsible trigger={<DataHeader />}>
-        <DataDetails />
-      </Collapsible>
-      <Collapsible trigger={<DataHeader />}>
-        <DataDetails />
-      </Collapsible>
-      <Collapsible trigger={<DataHeader />}>
-        <DataDetails />
-      </Collapsible>
-      <Collapsible trigger={<DataHeader />}>
-        <DataDetails />
-      </Collapsible>
-    </>
-  );
+const LoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  transform: translateY(70%);
+`;
+
+const RenderResults = (results) => {
+  if (Object.keys(results).length && results.length) {
+    return (
+      <>
+        {results.map((result) => {
+          return (
+            <Collapsible trigger={<DataHeader data={result} />}>
+              <DataDetails data={result} />
+            </Collapsible>
+          );
+        })}
+      </>
+    );
+  }
+
+  return <div>No results :(</div>;
 };
 
-const Main = () => {
+const Main = (props) => {
+  const { isLoading, searchResults } = props;
+
   return (
     <MainSideContainer>
-      <SearchInfo>Results for &apos;wow&apos; (2 results in 4 seconds)</SearchInfo>
-      <Content>
-        <InfoDiv />
-      </Content>
+      {!isLoading && (
+        <>
+          <SearchInfo>
+            Results for &apos;{localStorage.getItem('searchTerm')}&apos; ({searchResults.length} results)
+          </SearchInfo>
+          <Content>{RenderResults(searchResults)}</Content>
+        </>
+      )}
+
+      {isLoading && (
+        <>
+          <LoaderContainer>
+            <Loader type="Grid" color="#00BFFF" height={200} width={200} />
+          </LoaderContainer>
+        </>
+      )}
     </MainSideContainer>
   );
 };

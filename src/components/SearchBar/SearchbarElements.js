@@ -22,14 +22,3 @@ export const SearchTerm = styled.input`
   outline: none;
   color: white;
 `;
-
-export const SearchButton = styled.button`
-  flex: 0 1 10%;
-  border: 1px solid white;
-  border-radius: 0px;
-  background: #00b4cc;
-  padding-top: 1px;
-  color: #fff;
-  cursor: pointer;
-  font-size: 15px;
-`;

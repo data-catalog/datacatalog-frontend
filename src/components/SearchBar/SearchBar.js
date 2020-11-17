@@ -1,16 +1,23 @@
-import React from 'react';
-import { FaSearch } from 'react-icons/fa';
-import { Search, SearchButton, SearchTerm, Wrapper } from './SearchbarElements';
+import React, { useState } from 'react';
+import { Search, SearchTerm, Wrapper } from './SearchbarElements';
 import Filter from './FilterModal/Filter';
+import SearchButton from './SearchButton';
 
-const Searchbar = () => {
+const Searchbar = (props) => {
+  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm'));
+
   return (
     <Wrapper>
       <Search>
-        <SearchTerm placeholder="Search for data.." />
-        <SearchButton>
-          <FaSearch />
-        </SearchButton>
+        <SearchTerm
+          value={searchTerm || ''}
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+            localStorage.setItem('searchTerm', event.target.value);
+          }}
+          placeholder="Search for data.."
+        />
+        <SearchButton {...props} />
         <Filter />
       </Search>
     </Wrapper>
