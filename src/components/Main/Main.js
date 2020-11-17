@@ -59,6 +59,14 @@ const DetailsRow = styled.div`
 const DetailsText = styled.span`
   color: white;
   font-size: 110%;
+  flex: 0 0 88%;
+  text-align: justify;
+`;
+
+const DetailsTitle = styled.div`
+  flex: 0 0 10%;
+  color: white;
+  font-size: 110%;
 `;
 
 const CustomHeader = styled.div`
@@ -123,7 +131,7 @@ const DataHeader = ({ data }) => {
           Ownername/{data.name}
         </HeaderOwnerInfo>
         <HeaderUploadDate>Upload date: {data.updatedAt}</HeaderUploadDate>
-        <HeaderSize>Size: {data.size}</HeaderSize>
+        <HeaderSize>Size: {data.size} MB</HeaderSize>
         <HeaderSpacing />
         <HeaderHamburger />
         <HeaderArrow />
@@ -136,10 +144,16 @@ const DataDetails = ({ data }) => {
   return (
     <DetailsContainer>
       <DetailsRow>
+        <DetailsTitle>Description</DetailsTitle>
         <DetailsText>{data.description}</DetailsText>
       </DetailsRow>
       <DetailsRow>
-        <DetailsText>URL: {data.location.parameters[0].value}</DetailsText>
+        <DetailsTitle>URL</DetailsTitle>
+        <DetailsText>{data.location.parameters[0].value}</DetailsText>
+      </DetailsRow>
+      <DetailsRow>
+        <DetailsTitle>Tags</DetailsTitle>
+        <DetailsText>{data.tags.join(', ')}</DetailsText>
       </DetailsRow>
     </DetailsContainer>
   );
@@ -170,7 +184,7 @@ const RenderResults = (results) => {
       <>
         {results.map((result) => {
           return (
-            <Collapsible trigger={<DataHeader data={result} />}>
+            <Collapsible key={result.id} trigger={<DataHeader data={result} />}>
               <DataDetails data={result} />
             </Collapsible>
           );
