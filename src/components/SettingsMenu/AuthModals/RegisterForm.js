@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
 import { Form, FormGroup, Input, Button, InputContainer, ErrorTooltip } from '../../styles/Form';
-import Api from '../../../apis/api';
+import UserApi from '../../../apis/UserApi';
 import { useAuth } from '../../../context/AuthContext';
 
 const validationSchema = Yup.object().shape({
@@ -30,7 +30,7 @@ const RegisterForm = ({ toggleMenu, toggleModal }) => {
 
   const onSubmit = async (data) => {
     try {
-      await Api.post('users', data);
+      await UserApi.post('users', data);
       await login({ username: data.username, password: data.password });
 
       await toggleModal(false);

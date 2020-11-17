@@ -36,6 +36,7 @@ const SettingsButton = (props) => {
 
 const Navbar = (props) => {
   const { user } = useAuth();
+
   return (
     <>
       <Nav>
