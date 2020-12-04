@@ -8,6 +8,7 @@ export const ItemHolder = styled.a`
   border-radius: 8px;
   transition: background 300ms;
   padding: 0.5rem;
+  cursor: default;
 
   &:hover {
     background-color: ${(props) => props.theme.lightblue};
@@ -23,6 +24,7 @@ export const WelcomeHolder = styled.div`
   border-radius: 8px;
   transition: background 300ms;
   padding: 0.5rem;
+  cursor: default;
 `;
 
 export const LeftIcon = styled.span`

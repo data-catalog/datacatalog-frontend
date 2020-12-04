@@ -16,6 +16,7 @@ const SearchButtonContainer = styled.button`
 
 const SearchButton = (props) => {
   const doSearch = async () => {
+    props.setIsInitial(false);
     props.setIsLoading(true);
     const results = (await AssetApi.get('assets')).data;
     props.setSearchResults(results);
