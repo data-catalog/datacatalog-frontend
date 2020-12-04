@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState, forwardRef } from 'react';
 import { ThemeProvider } from 'styled-components';
 import Collapsible from 'react-collapsible';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { AiOutlineEdit, AiOutlineStar, AiOutlineDelete } from 'react-icons/ai';
+import Tippy from '@tippyjs/react/headless';
+import DetailedAssetView from './DetailedAssetView';
 import {
   HeaderArrow,
   HeaderHamburger,
   HeaderOwnerIcon,
   HeaderSpacing,
-  HeaderSize,
   HeaderUploadDate,
   HeaderOwnerInfo,
   CustomHeader,
@@ -21,10 +24,51 @@ import {
   SearchInfo,
   WindowContainer,
   LoaderContainer,
+  AssetOption,
+  AssetOptionsContainer,
+  AssetOptionsIcon,
+  MoreDetailsButton,
 } from './MainElements';
 
 import Sidebar from '../Sidebar/Sidebar';
 import { Colors } from '../Global/Colors';
+
+const AssetOptionsButton = forwardRef((props, ref) => {
+  return (
+    <>
+      <HeaderHamburger ref={ref} onClick={(e) => e.stopPropagation()}>
+        <GiHamburgerMenu />
+      </HeaderHamburger>
+    </>
+  );
+});
+
+const AssetOptionsMenu = () => {
+  return (
+    <>
+      <AssetOptionsContainer onClick={(e) => e.stopPropagation()}>
+        <AssetOption>
+          <AssetOptionsIcon>
+            <AiOutlineEdit />
+          </AssetOptionsIcon>
+          Edit
+        </AssetOption>
+        <AssetOption>
+          <AssetOptionsIcon>
+            <AiOutlineStar />
+          </AssetOptionsIcon>
+          Favourite
+        </AssetOption>
+        <AssetOption>
+          <AssetOptionsIcon>
+            <AiOutlineDelete />
+          </AssetOptionsIcon>
+          Delete
+        </AssetOption>
+      </AssetOptionsContainer>
+    </>
+  );
+};
 
 const DataHeader = ({ data }) => {
   return (
@@ -36,9 +80,10 @@ const DataHeader = ({ data }) => {
           Ownername/{data.name}
         </HeaderOwnerInfo>
         <HeaderUploadDate>Upload date: {data.updatedAt}</HeaderUploadDate>
-        <HeaderSize>Size: {data.size} MB</HeaderSize>
         <HeaderSpacing />
-        <HeaderHamburger />
+        <Tippy trigger="click" interactive="true" render={(attrs) => <AssetOptionsMenu {...attrs} />}>
+          <AssetOptionsButton />
+        </Tippy>
         <HeaderArrow />
       </CustomHeader>
     </>
@@ -60,6 +105,11 @@ const DataDetails = ({ data }) => {
         <DetailsTitle>Tags</DetailsTitle>
         <DetailsText>{data.tags.join(', ')}</DetailsText>
       </DetailsRow>
+      <DetailsRow>
+        <DetailsTitle>
+          <MoreDetailsButton>More details</MoreDetailsButton>
+        </DetailsTitle>
+      </DetailsRow>
     </DetailsContainer>
   );
 };
@@ -78,12 +128,17 @@ const AppWrapper = (props) => {
 };
 
 const RenderResults = (results) => {
+  const [showOptions, setShowOptions] = useState(false);
+
   if (Object.keys(results).length && results.length) {
     return (
       <>
         {results.map((result) => {
           return (
-            <Collapsible key={result.id} trigger={<DataHeader data={result} />}>
+            <Collapsible
+              key={result.id}
+              trigger={<DataHeader setShowOptions={setShowOptions} showOptions={showOptions} data={result} />}
+            >
               <DataDetails data={result} />
             </Collapsible>
           );

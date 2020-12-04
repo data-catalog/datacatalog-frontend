@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { FaRegUserCircle } from 'react-icons/fa';
-import { GiHamburgerMenu } from 'react-icons/gi';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 
 const WindowContainer = styled.div`
@@ -94,24 +93,57 @@ const HeaderOwnerInfo = styled.div`
 `;
 
 const HeaderUploadDate = styled.div`
-  flex: 0 0 20%;
+  flex: 0 0 35%;
   font-size: 110%;
-`;
-
-const HeaderSize = styled.div`
-  flex: 0 0 10%;
-  font-size: 110%;
-  margin-left: 3%;
 `;
 
 const HeaderSpacing = styled.div`
   flex: 0 1 10%;
 `;
 
-const HeaderHamburger = styled(GiHamburgerMenu)`
+const HeaderHamburger = styled.button`
   flex: 0 0 5%;
   color: ${(props) => props.theme.white};
   font-size: 200%;
+  transform: translateY(9%);
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  align-items: center;
+  text-align: center;
+
+  &:hover {
+    color: ${(props) => props.theme.lightblue};
+  }
+`;
+
+const AssetOptionsContainer = styled.div`
+  color: ${(props) => props.theme.white};
+  z-index: 100;
+  border-bottom: 1px solid ${(props) => props.theme.white};
+`;
+
+const AssetOption = styled.a`
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  background-color: ${(props) => props.theme.sidebar_color};
+  padding: 0.5rem;
+  cursor: default;
+  border: 1px solid ${(props) => props.theme.white};
+  border-bottom: none;
+
+  &:hover {
+    background-color: ${(props) => props.theme.lightblue};
+  }
+`;
+
+const AssetOptionsIcon = styled.span`
+  margin-right: 0.5rem;
+  flex: 0 0 20%;
+  transform: translateY(10%);
+  font-size: 130%;
 `;
 
 const HeaderArrow = styled(RiArrowDropDownLine)`
@@ -120,12 +152,24 @@ const HeaderArrow = styled(RiArrowDropDownLine)`
   font-size: 250%;
 `;
 
+const MoreDetailsButton = styled.button`
+  background-color: ${(props) => props.theme.back_color};
+  color: white;
+  border: 1px solid white;
+  border-radius: 8px;
+  padding: 5px;
+  font-size: 90%;
+
+  &:hover {
+    background-color: ${(props) => props.theme.lightblue};
+  }
+`;
+
 export {
   HeaderArrow,
   HeaderHamburger,
   HeaderOwnerIcon,
   HeaderSpacing,
-  HeaderSize,
   HeaderUploadDate,
   HeaderOwnerInfo,
   CustomHeader,
@@ -138,4 +182,8 @@ export {
   SearchInfo,
   WindowContainer,
   LoaderContainer,
+  AssetOptionsContainer,
+  AssetOption,
+  AssetOptionsIcon,
+  MoreDetailsButton,
 };
