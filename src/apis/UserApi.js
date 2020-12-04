@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const Api = axios.create({
+const UserApi = axios.create({
   baseURL: 'https://datacatalogregistryuserhandletest.azurewebsites.net',
   headers: {
     'Content-Type': 'application/json',
@@ -10,7 +10,7 @@ const Api = axios.create({
 
 const token = localStorage.getItem('access_token');
 if (token) {
-  Api.defaults.headers.Authorization = `Bearer ${token}`;
+  UserApi.defaults.headers.Authorization = `Bearer ${token}`;
 }
 
-export default Api;
+export default UserApi;

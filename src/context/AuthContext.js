@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import Api from '../apis/api';
+import UserApi from '../apis/UserApi';
 
 const AuthContext = createContext();
 
@@ -7,9 +7,9 @@ const AuthProvider = (props) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   const login = async (data) => {
-    const response = await Api.post('users/login', JSON.stringify(data));
+    const response = await UserApi.post('users/login', JSON.stringify(data));
 
-    Api.defaults.headers.Authorization = `Bearer ${response.data.token}`;
+    UserApi.defaults.headers.Authorization = `Bearer ${response.data.token}`;
 
     localStorage.setItem('access_token', response.data.token);
     localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -21,7 +21,7 @@ const AuthProvider = (props) => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
 
-    delete Api.defaults.headers.Authorization;
+    delete UserApi.defaults.headers.Authorization;
 
     setUser(null);
   };
