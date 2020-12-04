@@ -7,18 +7,24 @@ import AppWrapper from './components/Main/Main';
 
 const App = () => {
   const [searchResults, setSearchResults] = useState([1, 2, 3]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInitial, setIsInitial] = useState(true);
 
   return (
     <AuthProvider>
       <Router>
-        <Navbar setIsLoading={setIsLoading} searchResults={searchResults} setSearchResults={setSearchResults} />
+        <Navbar
+          setIsLoading={setIsLoading}
+          setIsInitial={setIsInitial}
+          searchResults={searchResults}
+          setSearchResults={setSearchResults}
+        />
         <Switch>
           <Route path="/" />
         </Switch>
       </Router>
 
-      <AppWrapper isLoading={isLoading} searchResults={searchResults} />
+      <AppWrapper isLoading={isLoading} isInitial={isInitial} searchResults={searchResults} />
     </AuthProvider>
   );
 };
