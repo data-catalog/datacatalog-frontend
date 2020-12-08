@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { RiArrowDropDownLine } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
 
 const WindowContainer = styled.div`
   position: absolute;
@@ -152,7 +153,7 @@ const HeaderArrow = styled(RiArrowDropDownLine)`
   font-size: 250%;
 `;
 
-const MoreDetailsButton = styled.button`
+const MoreDetailsButton = styled(Link)`
   background-color: ${(props) => props.theme.back_color};
   color: white;
   border: 1px solid white;

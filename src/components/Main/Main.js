@@ -6,7 +6,8 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { AiOutlineEdit, AiOutlineStar, AiOutlineDelete } from 'react-icons/ai';
 import Tippy from '@tippyjs/react/headless';
-import DetailedAssetView from './DetailedAssetView';
+import { Switch, Route } from 'react-router-dom';
+import AssetDetailedView from './AssetDetails/AssetDetailedView';
 import {
   HeaderArrow,
   HeaderHamburger,
@@ -32,6 +33,37 @@ import {
 
 import Sidebar from '../Sidebar/Sidebar';
 import { Colors } from '../Global/Colors';
+
+const AppWrapper = (props) => {
+  return (
+    <>
+      <ThemeProvider theme={Colors}>
+        <WindowContainer>
+          <Sidebar />
+          <Main {...props} />
+        </WindowContainer>
+      </ThemeProvider>
+    </>
+  );
+};
+
+const Main = (props) => {
+  const { isInitial, isLoading, isDetailed, searchResults } = props;
+  return (
+    <MainSideContainer>
+      <Switch>
+        <Route exact path="/">
+          <InitialState isInitial={isInitial} />
+          <ResultState {...props} />
+          <LoadingState isInitial={isInitial} isLoading={isLoading} />
+        </Route>
+        <Route path="/assets/:id">
+          <DetailedViewState isDetailed={isDetailed} searchResults={searchResults} />
+        </Route>
+      </Switch>
+    </MainSideContainer>
+  );
+};
 
 const AssetOptionsButton = forwardRef((props, ref) => {
   return (
@@ -90,7 +122,7 @@ const DataHeader = ({ data }) => {
   );
 };
 
-const DataDetails = ({ data }) => {
+const DataDetails = ({ data, ...props }) => {
   return (
     <DetailsContainer>
       <DetailsRow>
@@ -107,39 +139,27 @@ const DataDetails = ({ data }) => {
       </DetailsRow>
       <DetailsRow>
         <DetailsTitle>
-          <MoreDetailsButton>More details</MoreDetailsButton>
+          <MoreDetailsButton to={`/assets/${data.id}`}>More details</MoreDetailsButton>
         </DetailsTitle>
       </DetailsRow>
     </DetailsContainer>
   );
 };
 
-const AppWrapper = (props) => {
-  return (
-    <>
-      <ThemeProvider theme={Colors}>
-        <WindowContainer>
-          <Sidebar />
-          <Main {...props} />
-        </WindowContainer>
-      </ThemeProvider>
-    </>
-  );
-};
-
-const RenderResults = (results) => {
+const RenderResults = (props) => {
   const [showOptions, setShowOptions] = useState(false);
+  const { searchResults } = props;
 
-  if (Object.keys(results).length && results.length) {
+  if (Object.keys(searchResults).length && searchResults.length) {
     return (
       <>
-        {results.map((result) => {
+        {searchResults.map((result) => {
           return (
             <Collapsible
               key={result.id}
               trigger={<DataHeader setShowOptions={setShowOptions} showOptions={showOptions} data={result} />}
             >
-              <DataDetails data={result} />
+              <DataDetails {...props} data={result} />
             </Collapsible>
           );
         })}
@@ -150,34 +170,50 @@ const RenderResults = (results) => {
   return <div>No results :(</div>;
 };
 
-const Main = (props) => {
-  const { isInitial, isLoading, searchResults } = props;
+const ResultState = (props) => {
+  const { isInitial, isLoading, searchResults, isDetailed } = props;
+  if (!isInitial && !isLoading && !isDetailed) {
+    return (
+      <>
+        <SearchInfo>
+          Results for &apos;{localStorage.getItem('searchTerm')}&apos; ({searchResults.length} results)
+        </SearchInfo>
+        <Content>{RenderResults(props)}</Content>
+      </>
+    );
+  }
+  return null;
+};
 
+const InitialState = ({ isInitial }) => {
+  if (isInitial) {
+    return (
+      <>
+        <SearchInfo>Search for data to see results!</SearchInfo>
+      </>
+    );
+  }
+  return null;
+};
+
+const LoadingState = ({ isInitial, isLoading }) => {
+  if (!isInitial && isLoading) {
+    return (
+      <>
+        <LoaderContainer>
+          <Loader type="Grid" color="#00BFFF" height={200} width={200} />
+        </LoaderContainer>
+      </>
+    );
+  }
+  return null;
+};
+
+const DetailedViewState = ({ isDetailed, searchResults }) => {
   return (
-    <MainSideContainer>
-      {isInitial && (
-        <>
-          <SearchInfo>Search for data to see results!</SearchInfo>
-        </>
-      )}
-
-      {!isInitial && !isLoading && (
-        <>
-          <SearchInfo>
-            Results for &apos;{localStorage.getItem('searchTerm')}&apos; ({searchResults.length} results)
-          </SearchInfo>
-          <Content>{RenderResults(searchResults)}</Content>
-        </>
-      )}
-
-      {!isInitial && isLoading && (
-        <>
-          <LoaderContainer>
-            <Loader type="Grid" color="#00BFFF" height={200} width={200} />
-          </LoaderContainer>
-        </>
-      )}
-    </MainSideContainer>
+    <>
+      <AssetDetailedView searchResults={searchResults} />
+    </>
   );
 };
 
