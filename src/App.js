@@ -1,39 +1,34 @@
-import React, { useState } from 'react';
-import './App.css';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Navbar from './components/Navbar/Navbar';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import AppWrapper from './components/Main/Main';
 
-const App = () => {
-  const [searchResults, setSearchResults] = useState([1, 2, 3]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isInitial, setIsInitial] = useState(true);
-  const [isDetailed, setIsDetailed] = useState(false);
+import AssetsPage from './components/AssetsPage';
+import AssetDetailsPage from './components/AssetDetailsPage';
 
-  return (
-    <AuthProvider>
-      <Router>
-        <Navbar
-          setIsLoading={setIsLoading}
-          setIsInitial={setIsInitial}
-          searchResults={searchResults}
-          setSearchResults={setSearchResults}
-          setIsDetailed={setIsDetailed}
-        />
-        <AppWrapper
-          isLoading={isLoading}
-          isInitial={isInitial}
-          searchResults={searchResults}
-          setSearchResults={setSearchResults}
-          setIsDetailed={setIsDetailed}
-          isDetailed={isDetailed}
-          setIsLoading={setIsLoading}
-          setIsInitial={setIsInitial}
-        />
-      </Router>
-    </AuthProvider>
-  );
-};
+import { SearchInfo } from './components/AssetsPage/AssetsPageElements';
+import Page from './components/Page';
+
+const App = () => (
+  <AuthProvider>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          {/* TODO: refactor page to separate component */}
+          <Page>
+            <SearchInfo>Search for data to see results!</SearchInfo>
+          </Page>
+        </Route>
+
+        <Route path="/assets/search/:searchTerm">
+          <AssetsPage />
+        </Route>
+
+        <Route path="/assets/:id">
+          <AssetDetailsPage />
+        </Route>
+      </Switch>
+    </Router>
+  </AuthProvider>
+);
 
 export default App;
