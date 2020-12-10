@@ -19,7 +19,7 @@ const App = () => (
           </Page>
         </Route>
 
-        <Route path="/assets/search/:searchTerm">
+        <Route path="/assets/search/:searchTerm?">
           <AssetsPage />
         </Route>
 

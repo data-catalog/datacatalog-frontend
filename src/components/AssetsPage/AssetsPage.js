@@ -115,20 +115,23 @@ const AssetOptionsMenu = () => {
 
 const AssetsPage = () => {
   const { searchTerm } = useParams();
+  const keyword = searchTerm?.trim();
 
   const [isLoading, setLoading] = useState(true);
   const [assets, setAssets] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const results = (await AssetApi.get(`/assets/search/${searchTerm}`)).data;
+      const path = keyword ? `/assets/search/${keyword}` : '/assets';
+
+      const results = (await AssetApi.get(path)).data;
 
       setAssets(results);
       setLoading(false);
     }
 
     fetchData();
-  }, [searchTerm]);
+  }, [keyword]);
 
   return (
     <Page>
@@ -136,7 +139,7 @@ const AssetsPage = () => {
 
       {!!assets.length && (
         <SearchInfo>
-          Results for &apos;{searchTerm}&apos; ({assets.length} results)
+          Results for &apos;{keyword}&apos; ({assets.length} results)
         </SearchInfo>
       )}
 
