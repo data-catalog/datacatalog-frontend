@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -14,10 +14,19 @@ const SearchLink = styled(Link)`
   color: #fff;
   cursor: pointer;
   font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Searchbar = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const searchButton = useRef(null);
+  const searchOnEnter = (e) => {
+    if (e.key === 'Enter') {
+      searchButton.current.click();
+    }
+  };
 
   return (
     <Wrapper>
@@ -26,8 +35,9 @@ const Searchbar = () => {
           value={searchTerm}
           onChange={(event) => setSearchTerm(event.target.value)}
           placeholder="Search for data..."
+          onKeyDown={searchOnEnter}
         />
-        <SearchLink to={`/assets/search/${searchTerm}`}>
+        <SearchLink ref={searchButton} to={`/assets/search/${searchTerm}`}>
           <FaSearch />
         </SearchLink>
         <Filter />
