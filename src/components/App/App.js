@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from '../../context/AuthContext';
 
-import AssetsPage from './components/AssetsPage';
-import AssetDetailsPage from './components/AssetDetailsPage';
+import AssetsPage from '../AssetsPage';
+import AssetDetailsPage from '../AssetDetailsPage';
 
-import { SearchInfo } from './components/AssetsPage/AssetsPageElements';
-import Page from './components/Page';
+import { SearchInfo } from '../AssetsPage/AssetsPageElements';
+import Page from '../Page';
 
 const App = () => (
   <AuthProvider>

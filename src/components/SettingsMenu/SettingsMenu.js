@@ -10,7 +10,7 @@ import { Colors } from '../Global/Colors';
 import LoginModal from './AuthModals/LoginModal';
 import { useAuth } from '../../context/AuthContext';
 
-Modal.setAppElement('#root');
+Modal.setAppElement('body');
 
 const DropdownItem = ({ leftIcon, children, onClick }) => {
   return (
@@ -136,3 +136,4 @@ const SettingsMenu = ({ toggleMenu }) => {
 };
 
 export default SettingsMenu;
+export { LoginItem, ItemHolder };

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavMenu renders correctly 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "login": [Function],
+      "logout": [Function],
+      "user": null,
+    }
+  }
+>
+  <BrowserRouter>
+    <Navbar />
+  </BrowserRouter>
+</ContextProvider>
+`;

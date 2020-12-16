@@ -116,3 +116,4 @@ const LoginModal = ({ toggleMenu, toggleLoginModal }) => {
 };
 
 export default LoginModal;
+export { StyledLink };
