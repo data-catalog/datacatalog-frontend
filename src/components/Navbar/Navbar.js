@@ -34,7 +34,7 @@ const SettingsButton = (props) => {
   );
 };
 
-const Navbar = (props) => {
+const Navbar = () => {
   const { user } = useAuth();
 
   return (
@@ -42,7 +42,7 @@ const Navbar = (props) => {
       <Nav>
         <RightWrapper>
           <NavHome to="/">Data Catalog</NavHome>
-          <Searchbar {...props} />
+          <Searchbar />
         </RightWrapper>
         <Bars />
         <NavMenu>
