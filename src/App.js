@@ -7,13 +7,13 @@ import AssetDetailsPage from './components/AssetDetailsPage';
 
 import { SearchInfo } from './components/AssetsPage/AssetsPageElements';
 import Page from './components/Page';
+import CreateAssetPage from './components/CreateAssetPage/CreateAssetPage';
 
 const App = () => (
   <AuthProvider>
     <Router>
       <Switch>
         <Route exact path="/">
-          {/* TODO: refactor page to separate component */}
           <Page>
             <SearchInfo>Search for data to see results!</SearchInfo>
           </Page>
@@ -25,6 +25,10 @@ const App = () => (
 
         <Route path="/assets/:id">
           <AssetDetailsPage />
+        </Route>
+
+        <Route path="/create">
+          <CreateAssetPage />
         </Route>
       </Switch>
     </Router>

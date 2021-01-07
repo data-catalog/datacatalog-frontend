@@ -43,12 +43,15 @@ const CustomInput = (props) => {
   );
 };
 
-const EditableComponent = ({ setter, dataValue }) => {
+const EditableComponent = ({ newAsset, type, setter, dataValue }) => {
   return (
     <EasyEdit
       type={Types.TEXT}
-      // onSave={save}   save to localStorage
-      onSave={(val) => setter({ type: `${val}` })}
+      onSave={(val) => {
+        const modifiedAsset = newAsset;
+        modifiedAsset[type] = val;
+        setter(modifiedAsset);
+      }}
       editComponent={<CustomInput />}
       saveButtonLabel={<BsCheck />}
       cancelButtonLabel={<ImCancelCircle />}
@@ -58,7 +61,7 @@ const EditableComponent = ({ setter, dataValue }) => {
 };
 
 const GeneralData = (props) => {
-  const { asset, setNewAsset } = props;
+  const { asset, setNewAsset, newAsset } = props;
   return (
     <GeneralDataContainer>
       <LeftTableContainer>
@@ -67,7 +70,12 @@ const GeneralData = (props) => {
             <TableRow>
               <TableHeader>Type:</TableHeader>
               <TableCell>
-                <EditableComponent setter={setNewAsset} dataValue={asset.location.type} />
+                <EditableComponent
+                  newAsset={newAsset}
+                  type="type"
+                  setter={setNewAsset}
+                  dataValue={asset.location.type}
+                />
               </TableCell>
             </TableRow>
             <TableRow>
@@ -87,19 +95,29 @@ const GeneralData = (props) => {
             <TableRow>
               <TableHeader>Format:</TableHeader>
               <TableCell>
-                <EditableComponent dataValue={asset.format} />
+                <EditableComponent newAsset={newAsset} type="format" setter={setNewAsset} dataValue={asset.format} />
               </TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>Tags:</TableHeader>
               <TableCell>
-                <EditableComponent dataValue={asset.tags.join(', ')} />
+                <EditableComponent
+                  newAsset={newAsset}
+                  type="tags"
+                  setter={setNewAsset}
+                  dataValue={asset.tags.join(', ')}
+                />
               </TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>Namespace:</TableHeader>
               <TableCell>
-                <EditableComponent dataValue={asset.namespace} />
+                <EditableComponent
+                  newAsset={newAsset}
+                  type="namespace"
+                  setter={setNewAsset}
+                  dataValue={asset.namespace}
+                />
               </TableCell>
             </TableRow>
           </TableBody>
@@ -114,20 +132,29 @@ const DescriptionData = ({ asset }) => {
 };
 
 const DetailedViewWrapper = ({ asset }) => {
-  const [newAsset, setNewAsset] = useState({
-    type: '',
-    format: '',
-    tags: '',
-    namespace: '',
-    description: '',
-  });
+  const [newAsset, setNewAsset] = useState({});
+
+  const sendPut = async (data) => {
+    try {
+      console.log(data);
+      const result = await AssetApi.patch(`assets/${asset.id}`, data);
+      // await AssetApi.patch(`assets/${asset.id}`, JSON.stringify(data));
+      console.log(result);
+    } catch (err) {
+      if (err.response?.status === 405) {
+        console.log('No auth.');
+      } else {
+        console.log(err);
+      }
+    }
+  };
 
   return (
     <>
       <DetailedViewHeader>
         <AssetTitle>OwnerName/{asset.name}</AssetTitle>
         <ButtonContainer>
-          <Button onClick={console.log(newAsset)}>Save</Button>
+          <Button onClick={() => sendPut(newAsset)}>Save</Button>
           <Button>Delete</Button>
           <Button>Favorite</Button>
         </ButtonContainer>

@@ -46,7 +46,7 @@ const Navbar = () => {
         </RightWrapper>
         <Bars />
         <NavMenu>
-          <NavLink to="/about">Explore</NavLink>
+          <NavLink to="/create">Create Asset</NavLink>
           <NavLink to="/services">Library</NavLink>
         </NavMenu>
         <SettingsButton user={user} icon={<BsFillPersonFill />}>

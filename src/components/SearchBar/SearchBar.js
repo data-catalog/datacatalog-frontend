@@ -4,6 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { Search, SearchTerm, Wrapper } from './SearchbarElements';
 import Filter from './FilterModal/Filter';
+import { useAuth } from '../../context/AuthContext';
 
 const SearchLink = styled(Link)`
   flex: 0 1 10%;
@@ -21,6 +22,7 @@ const SearchLink = styled(Link)`
 
 const Searchbar = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const { user } = useAuth();
   const searchButton = useRef(null);
   const searchOnEnter = (e) => {
     if (e.key === 'Enter') {
@@ -31,16 +33,20 @@ const Searchbar = () => {
   return (
     <Wrapper>
       <Search>
-        <SearchTerm
-          value={searchTerm}
-          onChange={(event) => setSearchTerm(event.target.value)}
-          placeholder="Search for data..."
-          onKeyDown={searchOnEnter}
-        />
-        <SearchLink ref={searchButton} to={`/assets/search/${searchTerm}`}>
-          <FaSearch />
-        </SearchLink>
-        <Filter />
+        {user && (
+          <>
+            <SearchTerm
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Search for data..."
+              onKeyDown={searchOnEnter}
+            />
+            <SearchLink ref={searchButton} to={`/assets/search/${searchTerm}`}>
+              <FaSearch />
+            </SearchLink>
+            <Filter />
+          </>
+        )}
       </Search>
     </Wrapper>
   );
