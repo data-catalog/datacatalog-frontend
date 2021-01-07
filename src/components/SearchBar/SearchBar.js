@@ -47,3 +47,4 @@ const Searchbar = () => {
 };
 
 export default Searchbar;
+export { SearchLink };

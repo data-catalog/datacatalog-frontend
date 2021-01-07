@@ -110,7 +110,7 @@ const GeneralData = (props) => {
 };
 
 const DescriptionData = ({ asset }) => {
-  return <DescriptionContainer>{asset.description}</DescriptionContainer>;
+  return <DescriptionContainer>{asset?.description || <em>(No description)</em>}</DescriptionContainer>;
 };
 
 const DetailedViewWrapper = ({ asset }) => {
@@ -127,7 +127,7 @@ const DetailedViewWrapper = ({ asset }) => {
       <DetailedViewHeader>
         <AssetTitle>OwnerName/{asset.name}</AssetTitle>
         <ButtonContainer>
-          <Button onClick={console.log(newAsset)}>Save</Button>
+          <Button>Save</Button>
           <Button>Delete</Button>
           <Button>Favorite</Button>
         </ButtonContainer>
@@ -178,3 +178,4 @@ const AssetDetailsPage = () => {
 };
 
 export default AssetDetailsPage;
+export { DetailedViewWrapper, DescriptionData, GeneralData };

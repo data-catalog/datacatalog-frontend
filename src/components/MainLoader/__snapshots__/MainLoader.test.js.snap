@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainLoader renders correctly 1`] = `
+<styled.div>
+  <Loader
+    className=""
+    color="#00BFFF"
+    height={200}
+    style={Object {}}
+    timeout={0}
+    type="Grid"
+    visible={true}
+    width={200}
+  />
+</styled.div>
+`;
