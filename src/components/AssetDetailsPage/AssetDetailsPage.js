@@ -3,9 +3,12 @@ import { useParams } from 'react-router-dom';
 import { BsCheck } from 'react-icons/bs';
 import { ImCancelCircle } from 'react-icons/im';
 import EasyEdit, { Types } from 'react-easy-edit';
+import { ThemeProvider } from 'styled-components';
+import { confirmAlert } from 'react-confirm-alert';
 import AssetApi from '../../apis/AssetApi';
 import MainLoader from '../MainLoader';
 import Page from '../Page';
+import { Colors } from '../Global/Colors';
 import {
   TabContainer,
   SingleTab,
@@ -25,6 +28,7 @@ import {
   TableHeader,
   TableCell,
   CustomInputDiv,
+  ModalContainer,
   Input,
 } from './AssetDetailsPageElements';
 
@@ -131,6 +135,37 @@ const DescriptionData = ({ asset }) => {
   return <DescriptionContainer>{asset.description}</DescriptionContainer>;
 };
 
+const DeleteConfirmation = ({ id, onc }) => {
+  const doDelete = async () => {
+    try {
+      const response = await AssetApi.delete(`assets/${id}`).data;
+      console.log(response);
+    } catch (err) {
+      if (err.response?.status === 405) {
+        console.log('No auth.');
+      } else {
+        console.log(err);
+      }
+    }
+  };
+
+  return (
+    <ThemeProvider theme={Colors}>
+      <ModalContainer>
+        <Button onClick={() => onc()}>No</Button>
+        <Button
+          onClick={() => {
+            doDelete();
+            onc();
+          }}
+        >
+          Yes
+        </Button>
+      </ModalContainer>
+    </ThemeProvider>
+  );
+};
+
 const DetailedViewWrapper = ({ asset }) => {
   const [newAsset, setNewAsset] = useState({});
 
@@ -149,13 +184,41 @@ const DetailedViewWrapper = ({ asset }) => {
     }
   };
 
+  const confirmDelete = ({ id }) => {
+    confirmAlert({
+      // closeOnEscape: true,
+      // closeOnClickOutside: true,
+      // customUI: ({ onClose }) => {
+      //   return (
+      //     <div className="custom-ui">
+      //       <DeleteConfirmation id={id} onc={onClose} />
+      //     </div>
+      //   );
+      // },
+      title: 'Confirm to submit',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => alert('Click Yes'),
+        },
+        {
+          label: 'No',
+          onClick: () => alert('Click No'),
+        },
+      ],
+    });
+  };
+
   return (
     <>
       <DetailedViewHeader>
-        <AssetTitle>OwnerName/{asset.name}</AssetTitle>
+        <AssetTitle>
+          {asset.ownerId}/{asset.name}
+        </AssetTitle>
         <ButtonContainer>
           <Button onClick={() => sendPut(newAsset)}>Save</Button>
-          <Button>Delete</Button>
+          <Button onClick={() => confirmDelete(asset.id)}>Delete</Button>
           <Button>Favorite</Button>
         </ButtonContainer>
       </DetailedViewHeader>

@@ -62,7 +62,7 @@ const DataHeader = ({ asset }) => {
       <CustomHeader>
         <HeaderOwnerIcon />
         <HeaderOwnerInfo>
-          {asset.id}/{asset.name}
+          {asset.ownerId}/{asset.name}
         </HeaderOwnerInfo>
         <HeaderUploadDate>Upload date: {asset.updatedAt}</HeaderUploadDate>
         <HeaderSpacing />
