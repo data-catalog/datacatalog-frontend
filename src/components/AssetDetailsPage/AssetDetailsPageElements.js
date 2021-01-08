@@ -167,7 +167,21 @@ const Input = styled.input`
   min-width: 0;
 `;
 
+const ModalContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: flex-start;
+  background-color: ${(props) => props.theme.back_color};
+`;
+
+const ConfirmationHeader = styled.h2`
+  color: white;
+  align-self: center;
+`;
+
 export {
+  ConfirmationHeader,
   ButtonContainer,
   Button,
   TabContainer,
@@ -186,5 +200,6 @@ export {
   TableHeader,
   TableCell,
   CustomInputDiv,
+  ModalContainer,
   Input,
 };

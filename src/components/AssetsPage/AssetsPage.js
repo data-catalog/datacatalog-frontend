@@ -62,8 +62,7 @@ const DataHeader = ({ asset }) => {
       <CustomHeader>
         <HeaderOwnerIcon />
         <HeaderOwnerInfo>
-          {/* {data.id}/{data.name} */}
-          Ownername/{asset.name}
+          {asset.ownerId}/{asset.name}
         </HeaderOwnerInfo>
         <HeaderUploadDate>Upload date: {asset.updatedAt}</HeaderUploadDate>
         <HeaderSpacing />
@@ -122,7 +121,10 @@ const AssetsPage = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const path = keyword ? `/assets/search/${keyword}` : '/assets';
+      const path = keyword ? `/assets/search/${keyword}?` : '/assets';
+      // const owner = localStorage.getItem('ownerFilter');
+
+      // path += `owner=${owner}`;
 
       const results = (await AssetApi.get(path)).data;
 
@@ -143,8 +145,11 @@ const AssetsPage = () => {
         </SearchInfo>
       )}
 
+      {!isLoading && !assets.length && <SearchInfo>No results for &apos;{keyword}&apos;</SearchInfo>}
+
       <Content>
         {assets.map((asset) => {
+          console.log(assets);
           return (
             <Collapsible key={asset.id} trigger={<DataHeader asset={asset} />}>
               <DataDetails asset={asset} />

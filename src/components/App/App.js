@@ -4,6 +4,7 @@ import { AuthProvider } from '../../context/AuthContext';
 
 import AssetsPage from '../AssetsPage';
 import AssetDetailsPage from '../AssetDetailsPage';
+import CreateAssetPage from '../CreateAssetPage';
 
 import { SearchInfo } from '../AssetsPage/AssetsPageElements';
 import Page from '../Page';
@@ -13,7 +14,6 @@ const App = () => (
     <Router>
       <Switch>
         <Route exact path="/">
-          {/* TODO: refactor page to separate component */}
           <Page>
             <SearchInfo>Search for data to see results!</SearchInfo>
           </Page>
@@ -25,6 +25,10 @@ const App = () => (
 
         <Route path="/assets/:id">
           <AssetDetailsPage />
+        </Route>
+
+        <Route path="/create">
+          <CreateAssetPage />
         </Route>
       </Switch>
     </Router>

@@ -18,9 +18,6 @@ const Sidebar = () => {
   return (
     <SidebarContainer>
       <SidebarWelcome>Manage your library!</SidebarWelcome>
-      <div>We are here to help, ahahah</div>
-      <div>We are here to help, ahahah</div>
-      <div>We are here to help, ahahah</div>
     </SidebarContainer>
   );
 };

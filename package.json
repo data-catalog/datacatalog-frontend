@@ -22,6 +22,7 @@
     "react": "^16.14.0",
     "react-accessible-accordion": "^3.3.3",
     "react-collapsible": "^2.8.1",
+    "react-confirm-alert": "^2.6.2",
     "react-dom": "^16.14.0",
     "react-easy-edit": "^1.13.0",
     "react-hook-form": "^6.10.1",
@@ -36,11 +37,13 @@
     "react-scripts": "^3.4.3",
     "react-spinners": "^0.9.0",
     "react-spring": "^8.0.27",
+    "react-step-wizard": "^5.3.5",
     "react-sticky-box": "^0.9.3",
     "react-table": "^7.6.2",
     "react-tabs": "^3.1.1",
     "react-transition-group": "^4.4.1",
     "styled-components": "^5.2.0",
+    "use-wizard": "^3.2.0",
     "yup": "^0.29.3"
   },
   "devDependencies": {

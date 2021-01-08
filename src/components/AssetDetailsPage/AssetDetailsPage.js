@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom';
 import { BsCheck } from 'react-icons/bs';
 import { ImCancelCircle } from 'react-icons/im';
 import EasyEdit, { Types } from 'react-easy-edit';
+import { ThemeProvider } from 'styled-components';
+import Tippy from '@tippyjs/react/headless';
 import AssetApi from '../../apis/AssetApi';
 import MainLoader from '../MainLoader';
 import Page from '../Page';
+import { Colors } from '../Global/Colors';
 import {
   TabContainer,
   SingleTab,
@@ -25,6 +28,7 @@ import {
   TableHeader,
   TableCell,
   CustomInputDiv,
+  ModalContainer,
   Input,
 } from './AssetDetailsPageElements';
 
@@ -43,12 +47,15 @@ const CustomInput = (props) => {
   );
 };
 
-const EditableComponent = ({ setter, dataValue }) => {
+const EditableComponent = ({ newAsset, type, setter, dataValue }) => {
   return (
     <EasyEdit
       type={Types.TEXT}
-      // onSave={save}   save to localStorage
-      onSave={(val) => setter({ type: `${val}` })}
+      onSave={(val) => {
+        const modifiedAsset = newAsset;
+        modifiedAsset[type] = val;
+        setter(modifiedAsset);
+      }}
       editComponent={<CustomInput />}
       saveButtonLabel={<BsCheck />}
       cancelButtonLabel={<ImCancelCircle />}
@@ -58,7 +65,7 @@ const EditableComponent = ({ setter, dataValue }) => {
 };
 
 const GeneralData = (props) => {
-  const { asset, setNewAsset } = props;
+  const { asset, setNewAsset, newAsset } = props;
   return (
     <GeneralDataContainer>
       <LeftTableContainer>
@@ -67,7 +74,12 @@ const GeneralData = (props) => {
             <TableRow>
               <TableHeader>Type:</TableHeader>
               <TableCell>
-                <EditableComponent setter={setNewAsset} dataValue={asset.location.type} />
+                <EditableComponent
+                  newAsset={newAsset}
+                  type="type"
+                  setter={setNewAsset}
+                  dataValue={asset.location.type}
+                />
               </TableCell>
             </TableRow>
             <TableRow>
@@ -87,19 +99,29 @@ const GeneralData = (props) => {
             <TableRow>
               <TableHeader>Format:</TableHeader>
               <TableCell>
-                <EditableComponent dataValue={asset.format} />
+                <EditableComponent newAsset={newAsset} type="format" setter={setNewAsset} dataValue={asset.format} />
               </TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>Tags:</TableHeader>
               <TableCell>
-                <EditableComponent dataValue={asset.tags.join(', ')} />
+                <EditableComponent
+                  newAsset={newAsset}
+                  type="tags"
+                  setter={setNewAsset}
+                  dataValue={asset.tags.join(', ')}
+                />
               </TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>Namespace:</TableHeader>
               <TableCell>
-                <EditableComponent dataValue={asset.namespace} />
+                <EditableComponent
+                  newAsset={newAsset}
+                  type="namespace"
+                  setter={setNewAsset}
+                  dataValue={asset.namespace}
+                />
               </TableCell>
             </TableRow>
           </TableBody>
@@ -113,22 +135,79 @@ const DescriptionData = ({ asset }) => {
   return <DescriptionContainer>{asset?.description || <em>(No description)</em>}</DescriptionContainer>;
 };
 
+const DeleteConfirmation = ({ id, setVisible }) => {
+  const [deleted, setDeleted] = useState(false);
+  const doDelete = async () => {
+    try {
+      await AssetApi.delete(`assets/${id}`).data;
+      setDeleted(true);
+    } catch (err) {
+      if (err.response?.status === 405) {
+        console.log('No auth.');
+      } else {
+        console.log(err);
+      }
+    }
+  };
+
+  return (
+    <ThemeProvider theme={Colors}>
+      {deleted && <Redirect to="/" />}
+      <ModalContainer>
+        <Button onClick={() => setVisible(false)}>No</Button>
+        <Button
+          onClick={() => {
+            doDelete();
+          }}
+        >
+          Yes
+        </Button>
+      </ModalContainer>
+    </ThemeProvider>
+  );
+};
+
 const DetailedViewWrapper = ({ asset }) => {
-  const [newAsset, setNewAsset] = useState({
-    type: '',
-    format: '',
-    tags: '',
-    namespace: '',
-    description: '',
-  });
+  const [newAsset, setNewAsset] = useState({});
+  const [visible, setVisible] = useState(false);
+
+  const sendPut = async (data) => {
+    try {
+      console.log(data);
+      const result = await AssetApi.patch(`assets/${asset.id}`, data);
+      // await AssetApi.patch(`assets/${asset.id}`, JSON.stringify(data));
+      console.log(result);
+    } catch (err) {
+      if (err.response?.status === 405) {
+        console.log('No auth.');
+      } else {
+        console.log(err);
+      }
+    }
+  };
 
   return (
     <>
       <DetailedViewHeader>
-        <AssetTitle>OwnerName/{asset.name}</AssetTitle>
+        <AssetTitle>
+          {asset.ownerId}/{asset.name}
+        </AssetTitle>
         <ButtonContainer>
-          <Button>Save</Button>
-          <Button>Delete</Button>
+          <Button onClick={() => sendPut(newAsset)}>Save</Button>
+          <Tippy
+            trigger="click"
+            interactive="true"
+            visible={visible}
+            render={(attrs) => <DeleteConfirmation setVisible={setVisible} id={asset.id} {...attrs} />}
+          >
+            <Button
+              onClick={() => {
+                return visible ? setVisible(false) : setVisible(true);
+              }}
+            >
+              Delete
+            </Button>
+          </Tippy>
           <Button>Favorite</Button>
         </ButtonContainer>
       </DetailedViewHeader>
