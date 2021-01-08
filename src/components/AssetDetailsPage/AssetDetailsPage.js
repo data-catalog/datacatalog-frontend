@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom';
 import { BsCheck } from 'react-icons/bs';
 import { ImCancelCircle } from 'react-icons/im';
 import EasyEdit, { Types } from 'react-easy-edit';
 import { ThemeProvider } from 'styled-components';
-import { confirmAlert } from 'react-confirm-alert';
+import Tippy from '@tippyjs/react/headless';
 import AssetApi from '../../apis/AssetApi';
 import MainLoader from '../MainLoader';
 import Page from '../Page';
@@ -135,11 +135,12 @@ const DescriptionData = ({ asset }) => {
   return <DescriptionContainer>{asset.description}</DescriptionContainer>;
 };
 
-const DeleteConfirmation = ({ id, onc }) => {
+const DeleteConfirmation = ({ id, setVisible }) => {
+  const [deleted, setDeleted] = useState(false);
   const doDelete = async () => {
     try {
-      const response = await AssetApi.delete(`assets/${id}`).data;
-      console.log(response);
+      await AssetApi.delete(`assets/${id}`).data;
+      setDeleted(true);
     } catch (err) {
       if (err.response?.status === 405) {
         console.log('No auth.');
@@ -151,12 +152,12 @@ const DeleteConfirmation = ({ id, onc }) => {
 
   return (
     <ThemeProvider theme={Colors}>
+      {deleted && <Redirect to="/" />}
       <ModalContainer>
-        <Button onClick={() => onc()}>No</Button>
+        <Button onClick={() => setVisible(false)}>No</Button>
         <Button
           onClick={() => {
             doDelete();
-            onc();
           }}
         >
           Yes
@@ -168,6 +169,7 @@ const DeleteConfirmation = ({ id, onc }) => {
 
 const DetailedViewWrapper = ({ asset }) => {
   const [newAsset, setNewAsset] = useState({});
+  const [visible, setVisible] = useState(false);
 
   const sendPut = async (data) => {
     try {
@@ -184,32 +186,6 @@ const DetailedViewWrapper = ({ asset }) => {
     }
   };
 
-  const confirmDelete = ({ id }) => {
-    confirmAlert({
-      // closeOnEscape: true,
-      // closeOnClickOutside: true,
-      // customUI: ({ onClose }) => {
-      //   return (
-      //     <div className="custom-ui">
-      //       <DeleteConfirmation id={id} onc={onClose} />
-      //     </div>
-      //   );
-      // },
-      title: 'Confirm to submit',
-      message: 'Are you sure to do this.',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: () => alert('Click Yes'),
-        },
-        {
-          label: 'No',
-          onClick: () => alert('Click No'),
-        },
-      ],
-    });
-  };
-
   return (
     <>
       <DetailedViewHeader>
@@ -218,7 +194,20 @@ const DetailedViewWrapper = ({ asset }) => {
         </AssetTitle>
         <ButtonContainer>
           <Button onClick={() => sendPut(newAsset)}>Save</Button>
-          <Button onClick={() => confirmDelete(asset.id)}>Delete</Button>
+          <Tippy
+            trigger="click"
+            interactive="true"
+            visible={visible}
+            render={(attrs) => <DeleteConfirmation setVisible={setVisible} id={asset.id} {...attrs} />}
+          >
+            <Button
+              onClick={() => {
+                return visible ? setVisible(false) : setVisible(true);
+              }}
+            >
+              Delete
+            </Button>
+          </Tippy>
           <Button>Favorite</Button>
         </ButtonContainer>
       </DetailedViewHeader>

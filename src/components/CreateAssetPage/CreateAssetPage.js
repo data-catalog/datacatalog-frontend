@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import StepWizard from 'react-step-wizard';
+import { Redirect } from 'react-router-dom';
 import Page from '../Page';
 import AssetApi from '../../apis/AssetApi';
 import {
@@ -201,12 +202,21 @@ const assembleAsset = (type) => {
 const Nav = (props) => {
   const { currentStep } = props;
   const { user } = useAuth();
+  const [created, setCreated] = useState(false);
 
   async function createAsset() {
     const asset = assembleAsset(localStorage.getItem('createAssetLocation'));
-    const results = (await AssetApi.post('assets/', asset)).data;
 
-    console.log(results);
+    try {
+      await AssetApi.post('assets/', asset).data;
+      setCreated(true);
+    } catch (err) {
+      if (err.response?.status === 405) {
+        console.log('No auth.');
+      } else {
+        console.log(err);
+      }
+    }
   }
 
   return (
@@ -225,6 +235,7 @@ const Nav = (props) => {
             Create Asset!
           </Button>
         )}
+        {created && <Redirect to="/" />}
         <Button disabled={currentStep === 5} onClick={() => props.nextStep()}>
           Next Step
         </Button>

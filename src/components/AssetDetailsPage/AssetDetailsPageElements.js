@@ -173,8 +173,6 @@ const ModalContainer = styled.div`
   justify-content: center;
   align-content: flex-start;
   background-color: ${(props) => props.theme.back_color};
-  flex-direction: column;
-  z-index: 10000;
 `;
 
 const ConfirmationHeader = styled.h2`

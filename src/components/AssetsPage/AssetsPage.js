@@ -121,7 +121,10 @@ const AssetsPage = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const path = keyword ? `/assets/search/${keyword}` : '/assets';
+      const path = keyword ? `/assets/search/${keyword}?` : '/assets';
+      // const owner = localStorage.getItem('ownerFilter');
+
+      // path += `owner=${owner}`;
 
       const results = (await AssetApi.get(path)).data;
 
