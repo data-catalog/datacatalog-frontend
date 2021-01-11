@@ -58,6 +58,7 @@ const DescStep = () => {
 
 const TypeStep = () => {
   const [location, setLocation] = useState('url');
+  localStorage.setItem('createAssetLocation', 'url');
 
   return (
     <>
@@ -206,6 +207,7 @@ const Nav = (props) => {
 
   async function createAsset() {
     const asset = assembleAsset(localStorage.getItem('createAssetLocation'));
+    console.log(asset);
 
     try {
       await AssetApi.post('assets/', asset).data;
