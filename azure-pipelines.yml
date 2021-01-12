@@ -38,6 +38,7 @@ steps:
 - script: |
     npm run test:coverage   
 - task: SonarCloudAnalyze@1
+  condition: succeededOrFailed()
   displayName: 'Run SonarCloud analysis'
 - task: SonarCloudPublish@1
   displayName: 'Publish SonarCloud results'
