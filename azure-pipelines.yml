@@ -4,41 +4,55 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-  branches:
-    include:
-      - master
-      - development
+- master
+- development
+- feature/sonarcloud
 
 variables:
   uiSource: 'src'
   uiBuild: 'build'
+  shouldDeploy: $[in(variables['Build.SourceBranch'], 'refs/heads/master', 'refs/heads/development')]
 
-pool:
-  vmImage: 'ubuntu-latest'
+jobs:
+- job: prepare
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '12.x'
+    displayName: 'Install Node.js'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '12.x'
-  displayName: 'Install Node.js'
+  - script: |
+      pushd $(uiSource)
+      npm install
+      npm run build
+      popd
+    displayName: 'npm install and build'
+- job: sonarcloud
+  dependsOn: prepare
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - script: |
+      echo 'Sonar Cloud steps here'
+    displayName: 'test Sonar Cloud'
+- job: deploy
+  dependsOn: prepare
+  condition: and(succeeded(), eq(variables.shouldDeploy, true))
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(uiBuild)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
 
-- script: |
-    pushd $(uiSource)
-    npm install
-    npm run build
-    popd
-  displayName: 'npm install and build'
-
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(uiBuild)'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
