@@ -12,6 +12,7 @@ variables:
   uiSource: 'src'
   uiBuild: 'build'
   shouldDeploy: $[in(variables['Build.SourceBranch'], 'refs/heads/master', 'refs/heads/development')]
+  shouldRunTests: $[in(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -54,6 +55,7 @@ steps:
     projectName: "Data Catalog Frontend"
   displayName: 'Prepare SonarCloud analysis'
 - script: npm run test:coverage  
+  condition: and(succeeded(), eq(variables.shouldRunTests, true))
   displayName: 'Run tests and generate coverage'
 - task: SonarCloudAnalyze@1
   condition: succeededOrFailed()
