@@ -6,13 +6,12 @@
 trigger:
 - master
 - development
-- feature/sonarcloud
 
 variables:
   uiSource: 'src'
   uiBuild: 'build'
   shouldDeploy: $[in(variables['Build.SourceBranch'], 'refs/heads/master', 'refs/heads/development')]
-  shouldRunTests: $[in(variables['Build.SourceBranch'], 'refs/heads/master')]
+  shouldRunAnalysis: $[in(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -55,12 +54,12 @@ steps:
     projectName: "Data Catalog Frontend"
   displayName: 'Prepare SonarCloud analysis'
 - script: npm run test:coverage  
-  condition: and(succeeded(), eq(variables.shouldRunTests, true))
+  condition: and(succeeded(), eq(variables.shouldRunAnalysis, true))
   displayName: 'Run tests and generate coverage'
 - task: SonarCloudAnalyze@1
-  condition: succeededOrFailed()
+  condition: and(succeededOrFailed(), eq(variables.shouldRunAnalysis, true))
   displayName: 'Run SonarCloud analysis'
 - task: SonarCloudPublish@1
-  condition: succeededOrFailed()
+  condition: and(succeededOrFailed(), eq(variables.shouldRunAnalysis, true))
   displayName: 'Publish SonarCloud results'
 
