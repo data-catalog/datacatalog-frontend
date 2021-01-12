@@ -26,9 +26,9 @@ jobs:
   - script: |
       pushd $(uiSource)
       npm install
-      npm run build
       popd
-    displayName: 'npm install and build'
+    displayName: 'Install dependencies'
+
 - job: sonarcloud
   dependsOn: prepare
   pool:
@@ -37,12 +37,29 @@ jobs:
   - script: |
       echo 'Sonar Cloud steps here'
     displayName: 'test Sonar Cloud'
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'sonarcloud-frontend'
+      organization: 'katacseke'
+      scannerMode: 'CLI'
+      projectKey: "katacseke_data-catalog-frontend"
+      projectName: "Data Catalog Frontend"
+    displayName: 'Prepare SonarCloud analysis'
+  - script: |
+      npm run test:coverage   
+  - task: SonarCloudAnalyze@1
+    displayName: 'Run SonarCloud analysis'
+  - task: SonarCloudPublish@1
+    displayName: 'Publish SonarCloud results'
+
 - job: deploy
   dependsOn: prepare
   condition: and(succeeded(), eq(variables.shouldDeploy, true))
   pool:
     vmImage: 'ubuntu-latest'
   steps:
+  - script: npm run build
+    displayName: 'Build for production'
   - task: ArchiveFiles@2
     inputs:
       rootFolderOrFile: '$(uiBuild)'
@@ -50,7 +67,6 @@ jobs:
       archiveType: 'zip'
       archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       replaceExistingArchive: true
-
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
