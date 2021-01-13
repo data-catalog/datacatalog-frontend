@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const UserApi = axios.create({
-  baseURL: 'https://datacatalogregistryuserhandletest.azurewebsites.net',
+  baseURL: 'https://userhandlingservice.azurewebsites.net',
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
