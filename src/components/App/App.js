@@ -2,11 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { AuthProvider } from '../../context/AuthContext';
 
-import AssetsPage from '../AssetsPage';
-import AssetDetailsPage from '../AssetDetailsPage';
-import CreateAssetPage from '../CreateAssetPage';
+import AssetsPage from '../../pages/AssetsPage';
+import AssetDetailsPage from '../../pages/AssetDetailsPage';
+import CreateAssetPage from '../../pages/CreateAssetPage';
 
-import { SearchInfo } from '../AssetsPage/AssetsPageElements';
+import { SearchInfo } from '../../pages/AssetsPage/AssetsPageElements';
 import Page from '../Page';
 
 const App = () => (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import StepWizard from 'react-step-wizard';
 import { Redirect } from 'react-router-dom';
-import Page from '../Page';
+import Page from '../../components/Page';
 import AssetApi from '../../apis/AssetApi';
 import {
   CreateAssetHeader,

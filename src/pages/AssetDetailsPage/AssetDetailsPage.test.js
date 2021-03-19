@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { act } from 'react-dom/test-utils';
 import AssetApi from '../../apis/AssetApi';
 import { AuthProvider } from '../../context/AuthContext';
-import MainLoader from '../MainLoader';
+import MainLoader from '../../components/MainLoader';
 import AssetDetailsPage, { DetailedViewWrapper, DescriptionData } from './AssetDetailsPage';
 import { SingleTab } from './AssetDetailsPageElements';
 

@@ -6,9 +6,9 @@ import EasyEdit, { Types } from 'react-easy-edit';
 import { ThemeProvider } from 'styled-components';
 import Tippy from '@tippyjs/react/headless';
 import AssetApi from '../../apis/AssetApi';
-import MainLoader from '../MainLoader';
-import Page from '../Page';
-import { Colors } from '../Global/Colors';
+import MainLoader from '../../components/MainLoader';
+import Page from '../../components/Page';
+import { Colors } from '../../components/Global/Colors';
 import {
   TabContainer,
   SingleTab,

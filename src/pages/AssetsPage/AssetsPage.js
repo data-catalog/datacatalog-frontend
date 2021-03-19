@@ -6,8 +6,8 @@ import { AiOutlineEdit, AiOutlineStar, AiOutlineDelete } from 'react-icons/ai';
 import Tippy from '@tippyjs/react/headless';
 import Collapsible from 'react-collapsible';
 import AssetApi from '../../apis/AssetApi';
-import MainLoader from '../MainLoader';
-import Page from '../Page';
+import MainLoader from '../../components/MainLoader';
+import Page from '../../components/Page';
 
 import {
   HeaderArrow,
