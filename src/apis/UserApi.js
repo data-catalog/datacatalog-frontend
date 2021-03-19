@@ -9,8 +9,7 @@ const UserApi = axios.create({
 });
 
 const token = localStorage.getItem('access_token');
-if (token) {
-  UserApi.defaults.headers.Authorization = `Bearer ${token}`;
-}
+
+UserApi.defaults.headers.Authorization = token ? `Bearer ${token}` : undefined;
 
 export default UserApi;

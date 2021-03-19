@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import AssetApi from '../apis/AssetApi';
 import UserApi from '../apis/UserApi';
 
 const AuthContext = createContext();
@@ -10,6 +11,7 @@ const AuthProvider = (props) => {
     const response = await UserApi.post('users/login', JSON.stringify(data));
 
     UserApi.defaults.headers.Authorization = `Bearer ${response.data.token}`;
+    AssetApi.defaults.headers.Authorization = `Bearer ${response.data.token}`;
 
     localStorage.setItem('access_token', response.data.token);
     localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -22,6 +24,7 @@ const AuthProvider = (props) => {
     localStorage.removeItem('user');
 
     delete UserApi.defaults.headers.Authorization;
+    delete AssetApi.defaults.headers.Authorization;
 
     setUser(null);
   };
