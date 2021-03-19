@@ -12,25 +12,25 @@ import Page from '../Page';
 const App = () => (
   <AuthProvider>
     <Router>
-      <Switch>
-        <Route exact path="/">
-          <Page>
+      <Page>
+        <Switch>
+          <Route exact path="/">
             <SearchInfo>Search for data to see results!</SearchInfo>
-          </Page>
-        </Route>
+          </Route>
 
-        <Route path="/assets/search/:searchTerm?">
-          <AssetsPage />
-        </Route>
+          <Route path="/assets/search/:searchTerm?">
+            <AssetsPage />
+          </Route>
 
-        <Route path="/assets/:id">
-          <AssetDetailsPage />
-        </Route>
+          <Route path="/assets/:id">
+            <AssetDetailsPage />
+          </Route>
 
-        <Route path="/create">
-          <CreateAssetPage />
-        </Route>
-      </Switch>
+          <Route path="/create">
+            <CreateAssetPage />
+          </Route>
+        </Switch>
+      </Page>
     </Router>
   </AuthProvider>
 );
