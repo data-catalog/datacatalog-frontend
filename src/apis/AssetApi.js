@@ -8,8 +8,14 @@ const AssetApi = axios.create({
   },
 });
 
-const token = localStorage.getItem('access_token');
+AssetApi.interceptors.request.use((req) => {
+  const token = localStorage.getItem('access_token');
 
-AssetApi.defaults.headers.Authorization = token ? `Bearer ${token}` : undefined;
+  if (token) {
+    req.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return req;
+});
 
 export default AssetApi;
