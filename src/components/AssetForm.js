@@ -128,8 +128,6 @@ export default function AssetForm({ type, setValues, onSubmit, onCancel }) {
 
   const locationType = watch('location.type');
 
-  console.log(setValues);
-
   useEffect(() => setValues && reset(setValues), [setValues, reset]);
 
   return (

@@ -21,7 +21,9 @@ function LoggedInSection() {
 
   return (
     <>
-      <NavDropdown.Item>Settings</NavDropdown.Item>
+      <NavDropdown.Item as={Link} to="/user/settings">
+        Profile Settings
+      </NavDropdown.Item>
       <NavDropdown.Item as={Link} to="/user/assets">
         My assets
       </NavDropdown.Item>

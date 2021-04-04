@@ -7,6 +7,7 @@ import AssetDetailsPage from '../../pages/AssetDetailsPage';
 import AssetSearchPage from '../../pages/AssetSearchPage';
 import CreateAssetPage from '../../pages/CreateAssetPage';
 import EditAssetPage from '../../pages/EditAssetPage';
+import EditProfilePage from '../../pages/EditProfilePage';
 import ErrorPage from '../../pages/ErrorPage';
 import HomePage from '../../pages/HomePage';
 import SearchUsersPage from '../../pages/SearchUsersPage';
@@ -36,9 +37,14 @@ const App = () => {
                 <ProtectedRoute onlyAdmin path="/users/search/:searchTerm?">
                   <SearchUsersPage />
                 </ProtectedRoute>
+
                 <ProtectedRoute exact path="/user/assets">
                   <UserAssetsPage />
                 </ProtectedRoute>
+                <ProtectedRoute exact path="/user/settings">
+                  <EditProfilePage />
+                </ProtectedRoute>
+
                 <ProtectedRoute exact path="/assets/create">
                   <CreateAssetPage />
                 </ProtectedRoute>
@@ -51,6 +57,7 @@ const App = () => {
                 <ProtectedRoute path="/assets/:assetId/edit">
                   <EditAssetPage />
                 </ProtectedRoute>
+
                 <Route path="*">
                   <ErrorPage />
                 </Route>

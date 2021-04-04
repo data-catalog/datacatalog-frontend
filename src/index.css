@@ -20,3 +20,11 @@ kbd {
 .custom-control-label {
   cursor: pointer;
 }
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
