@@ -6,6 +6,7 @@ import { Card } from 'react-bootstrap';
 import AssetApi from '../apis/AssetApi';
 import AssetForm from '../components/AssetForm';
 import useNotify from '../hooks/useNotify';
+import Page from '../components/Page';
 
 const fetcher = (url) => AssetApi.get(url);
 
@@ -39,11 +40,13 @@ export default function EditAssetPage() {
   const onCancel = () => history.push(`/assets/${assetId}`);
 
   return (
-    <Card className="shadow-sm">
-      <Card.Header as="h1">Edit asset</Card.Header>
-      <Card.Body>
-        <AssetForm type="edit" setValues={response?.data} onSubmit={onSubmit} onCancel={onCancel} />
-      </Card.Body>
-    </Card>
+    <Page>
+      <Card className="shadow-sm">
+        <Card.Header as="h1">Edit asset</Card.Header>
+        <Card.Body>
+          <AssetForm type="edit" setValues={response?.data} onSubmit={onSubmit} onCancel={onCancel} />
+        </Card.Body>
+      </Card>
+    </Page>
   );
 }

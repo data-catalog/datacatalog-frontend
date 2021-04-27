@@ -5,6 +5,7 @@ import { Card } from 'react-bootstrap';
 import AssetApi from '../apis/AssetApi';
 import AssetForm from '../components/AssetForm';
 import useNotify from '../hooks/useNotify';
+import Page from '../components/Page';
 
 export default function CreateAssetPage() {
   const notify = useNotify();
@@ -36,11 +37,13 @@ export default function CreateAssetPage() {
   };
 
   return (
-    <Card className="shadow-sm">
-      <Card.Header as="h1">Create a new asset</Card.Header>
-      <Card.Body>
-        <AssetForm type="create" onSubmit={onSubmit} />
-      </Card.Body>
-    </Card>
+    <Page>
+      <Card className="shadow-sm">
+        <Card.Header as="h1">Create a new asset</Card.Header>
+        <Card.Body>
+          <AssetForm type="create" onSubmit={onSubmit} />
+        </Card.Body>
+      </Card>
+    </Page>
   );
 }

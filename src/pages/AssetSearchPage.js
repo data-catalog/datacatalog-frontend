@@ -7,6 +7,7 @@ import useSWR from 'swr';
 import AssetApi from '../apis/AssetApi';
 import AssetCard from '../components/AssetCard';
 import CardContainer from '../components/CardContainer';
+import Page from '../components/Page';
 
 const fetcher = (url) => AssetApi.get(url);
 
@@ -29,7 +30,7 @@ export default function AssetSearchPage() {
   };
 
   return (
-    <>
+    <Page>
       <h1 className="mb-3">Explore assets</h1>
       <Form onSubmit={handleSearch}>
         <InputGroup size="lg" className="mb-5">
@@ -48,6 +49,6 @@ export default function AssetSearchPage() {
         <h2 className="mb-4">{searchTerm ? `Search results for ${searchTerm}` : 'Recently added'}</h2>
         <CardContainer>{data && data.data.map((asset) => <AssetCard key={asset.id} asset={asset} />)}</CardContainer>
       </Form>
-    </>
+    </Page>
   );
 }

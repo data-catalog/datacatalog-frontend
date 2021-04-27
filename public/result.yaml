@@ -1,0 +1,682 @@
+openapi: 3.0.0
+info:
+  title: User
+  version: "1.0"
+  description: Data Catalog User API.
+  contact:
+    name: Kata Sára Cseke
+    email: katacseke@gmail.com
+servers:
+  - url: http://localhost:3000
+paths:
+  "/users/{userId}":
+    parameters:
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+        description: Unique identifier for user
+    get:
+      summary: Get a User
+      tags:
+        - User
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: UserResponse
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 507f1f77bcf86cd799439011
+                  email:
+                    type: string
+                    format: email
+                    example: example@mail.com
+                  firstName:
+                    type: string
+                    example: Jane
+                  lastName:
+                    type: string
+                    example: Doe
+                  username:
+                    type: string
+                    minLength: 3
+                    example: User1
+                  role:
+                    type: string
+                    example: user
+                    enum:
+                      - ADMIN
+                      - USER
+                    default: USER
+              examples: {}
+        "404":
+          description: User not found
+      operationId: getUser
+      description: Get user by ID
+    delete:
+      summary: Delete a User
+      operationId: deleteUser
+      responses:
+        "204":
+          description: User deleted
+      description: Delete a specific user
+      tags:
+        - User
+      security:
+        - JWT: []
+    patch:
+      summary: Update User by ID
+      operationId: updateUser
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+        "422":
+          description: Unprocessable Entity (WebDAV)
+          content:
+            application/json:
+              schema:
+                title: ErrorResponse
+                type: object
+                description: "Response model sent by the server when an error occured. "
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: The time of the error response being sent.
+                  status:
+                    type: integer
+                    description: The status code of the response.
+                    example: 400
+                    minimum: 100
+                    maximum: 599
+                  error:
+                    type: string
+                    description: The status description of the response.
+                    example: Bad Request
+                  message:
+                    type: object
+                    description: An object containing the erros, with the field name as key, and the
+                      error cause as value.
+                  path:
+                    type: string
+                    example: /assets
+                    description: The path at which the request was sent.
+                required:
+                  - status
+      description: >-
+        Updates the specified attributes of a user. The attributes not present
+        in the request remain unchanged.
+
+        The role of the user CANNOT be updated using this endpoint.
+
+        The username CANNOT be updated at all.
+      security:
+        - JWT: []
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: UserUpdateRequest
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: example@mail.com
+                firstName:
+                  type: string
+                  example: Jane
+                lastName:
+                  type: string
+                  example: Doe
+                password:
+                  type: string
+                  format: password
+                  pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$
+                  minLength: 6
+                  description: Password of minimum 6 characters, which contains at least a number
+                    and a letter
+                  example: password1234
+  /users:
+    get:
+      summary: Get all Users
+      tags:
+        - User
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  title: UserResponse
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: 507f1f77bcf86cd799439011
+                    email:
+                      type: string
+                      format: email
+                      example: example@mail.com
+                    firstName:
+                      type: string
+                      example: Jane
+                    lastName:
+                      type: string
+                      example: Doe
+                    username:
+                      type: string
+                      minLength: 3
+                      example: User1
+                    role:
+                      type: string
+                      example: user
+                      enum:
+                        - ADMIN
+                        - USER
+                      default: USER
+              examples: {}
+      operationId: getUsers
+      description: Get all users.
+    post:
+      summary: Create a User
+      operationId: createUser
+      responses:
+        "201":
+          description: Created
+        "422":
+          description: Unprocessable entity.
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1users~1%7BuserId%7D/patch/responses/422/content/application~1j\
+                  son/schema"
+      description: Create new user (registration).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: UserCreationRequest
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: example@mail.com
+                firstName:
+                  type: string
+                  example: Jane
+                lastName:
+                  type: string
+                  example: Doe
+                username:
+                  type: string
+                  minLength: 3
+                  example: User1
+                password:
+                  type: string
+                  format: password
+                  pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$
+                  minLength: 6
+                  description: Password of minimum 6 characters, which contains at least a number
+                    and a letter
+                  example: password1234
+              required:
+                - email
+                - firstName
+                - lastName
+                - username
+                - password
+              x-examples:
+                Registration example:
+                  email: example@mail.com
+                  firstName: Jane
+                  lastName: Doe
+                  username: User1
+                  password: password1234
+            examples: {}
+        description: User information for registration.
+      tags:
+        - User
+  /users/login:
+    post:
+      summary: Log In
+      operationId: login
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: UserLoginResponse
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0ODUxNDA5ODQsImlhdCI6MTQ4NTEzNzM4NCwiaXNzIjoiYWNtZS5jb20iLCJzdWIiOiIyOWFjMGMxOC0wYjRhLTQyY2YtODJmYy0wM2Q1NzAzMThhMWQiLCJhcHBsaWNhdGlvbklkIjoiNzkxMDM3MzQtOTdhYi00ZDFhLWFmMzctZTAwNmQwNWQyOTUyIiwic
+                    description: JWT token sent by the server. The client will send this with every
+                      request to authenticate themselves.
+                  user:
+                    title: UserResponse
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 507f1f77bcf86cd799439011
+                      email:
+                        type: string
+                        format: email
+                        example: example@mail.com
+                      firstName:
+                        type: string
+                        example: Jane
+                      lastName:
+                        type: string
+                        example: Doe
+                      username:
+                        type: string
+                        minLength: 3
+                        example: User1
+                      role:
+                        type: string
+                        example: user
+                        enum:
+                          - ADMIN
+                          - USER
+                        default: USER
+                x-examples:
+                  Successful login response example:
+                    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0ODUxNDA5ODQsImlhdCI6MTQ4NTEzNzM4NCwiaXNzIjoiYWNtZS5jb20iLCJzdWIiOiIyOWFjMGMxOC0wYjRhLTQyY2YtODJmYy0wM2Q1NzAzMThhMWQiLCJhcHBsaWNhdGlvbklkIjoiNzkxMDM3MzQtOTdhYi00ZDFhLWFmMzctZTAwNmQwNWQyOTUyIiwic
+                    user:
+                      id: string
+                      email: example@mail.com
+                      firstName: Jane
+                      lastName: Doe
+                      username: User1
+                      role: user
+                description: ""
+              examples: {}
+        "401":
+          description: Authentication failed. The username or password is not correct.
+        "422":
+          description: Unprocessable Entity (WebDAV)
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1users~1%7BuserId%7D/patch/responses/422/content/application~1j\
+                  son/schema"
+      description: Log user into the system.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: UserLoginRequest
+              type: object
+              x-examples:
+                Login example:
+                  username: username1
+                  password: password123
+              properties:
+                username:
+                  type: string
+                  example: username1
+                password:
+                  type: string
+                  format: password
+                  example: password123
+              required:
+                - username
+                - password
+            examples: {}
+      tags:
+        - Authentication
+        - User
+  /token_info:
+    post:
+      summary: Token Introspection
+      operationId: tokenInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: TokenInfoResponse
+                type: object
+                examples:
+                  Active response:
+                    value:
+                      active: true
+                      client_id: 231asdkj3249dkd
+                      username: janedoe
+                      exp: 1437275311
+                      iat: 1419350238
+                  Inactive response:
+                    value:
+                      active: false
+                properties:
+                  active:
+                    type: boolean
+                    description: This is a boolean value of whether or not the presented token is
+                      currently active.
+                  userId:
+                    type: string
+                    minLength: 1
+                    description: The unique identifier for the user that the token was issued to.
+                  username:
+                    type: string
+                    minLength: 1
+                    description: The username of the user that the token was issued to.
+                    example: user1
+                  role:
+                    type: string
+                    description: |
+                      the role for the user that the token was issued to.
+                    enum:
+                      - USER
+                      - ADMIN
+                  exp:
+                    type: integer
+                    description: The unix timestamp indicating when this token will expire.
+                    example: 1437275311
+                    format: int64
+                  iat:
+                    type: integer
+                    description: Unix timestamp indicating when this token was originally issued.
+                    example: 1419350238
+                    format: int64
+              examples: {}
+      description: It provides information about the token.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: TokenInfoRequest
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: |
+                    The string value of the token.
+                token_type_hint:
+                  type: string
+                  description: A hint about the type of the token submitted for introspection.
+                  enum:
+                    - access_token
+                    - api_key
+              required:
+                - token
+        description: Contains the token.
+      tags:
+        - Authentication
+        - User
+  /user/keys:
+    get:
+      summary: Get the API Keys of the Authenticated User
+      tags:
+        - ApiKey
+        - User
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  title: ApiKeyResponse
+                  type: object
+                  description: >-
+                    ApiKey model sent by the server to the client.
+
+                    Note that the actual key is only sent once after the creation of the key, and will only be stored a hased version of it on the server. Make sure to save the key, as it is not recoverable.
+                  properties:
+                    title:
+                      type: string
+                      description: ""
+                    id:
+                      type: string
+                      description: The unique identifier of the api key.
+                      format: uuid
+      operationId: getUserApiKeys
+      description: Lists the api keys for the authenticated user. Requires
+        authentication via access token.
+      security:
+        - JWT: []
+    post:
+      summary: Create an API Key for the Authenticated User
+      operationId: createUserApiKey
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                title: ApiKeyCreationResponse
+                description: >-
+                  ApiKey model sent by the server to the client after the
+                  generation of a new api key.
+
+                  Note that the actual key is only sent once after the creation of the key, and will only be stored a hashed version of it on the server. Make sure to save the key, as it is not recoverable.
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: A descriptive name for the new api key.
+                  id:
+                    type: string
+                    description: The unique identifier of the api key.
+                  key:
+                    type: string
+                    description: The api key. It is only sent once, after the creation of the api
+                      key.
+        "422":
+          description: Unprocessable Entity (WebDAV)
+      description: Generates a new api key for the authenticated user. Requires that
+        you are authenticated via access token.
+      tags:
+        - ApiKey
+        - User
+      security:
+        - JWT: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: ApiKeyCreationRequest
+              type: object
+              description: ApiKey model sent by the client to the server for creating a new
+                api key.
+              properties:
+                title:
+                  type: string
+                  description: A descriptive name for the new api key. Use a name that will help
+                    you recognize this key in your account.
+                  minLength: 1
+              required:
+                - title
+  "/user/keys/{keyId}":
+    parameters:
+      - schema:
+          type: string
+        name: keyId
+        in: path
+        required: true
+        description: The id of the api key.
+    get:
+      summary: Get an API Key
+      tags:
+        - ApiKey
+        - User
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1user~1keys/get/responses/200/content/application~1json/schema/\
+                  items"
+        "404":
+          description: Not Found
+      operationId: getUserApiKey
+      description: View a single api key of the authenticated user. Requires that you
+        are authenticated via access token.
+      security:
+        - JWT: []
+    delete:
+      summary: Delete an API Key
+      operationId: deleteUserApiKey
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+      description: Removes an api key from the authenticated user. Requires that you
+        are authenticated via access token.
+      security:
+        - JWT: []
+      tags:
+        - ApiKey
+        - User
+  /users/show_many:
+    get:
+      summary: Get Many Users by ID
+      tags:
+        - User
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/paths/~1users/get/responses/200/content/application~1json/schema/items"
+      operationId: getManyUsersById
+      parameters:
+        - schema:
+            type: array
+            items:
+              type: string
+            uniqueItems: true
+          in: query
+          name: ids
+          description: A comma separated list of ids to query.
+          required: true
+          style: form
+      description: Returns all of the users with the specified IDs.
+    parameters: []
+  "/users/username/{username}":
+    parameters:
+      - schema:
+          type: string
+        name: username
+        in: path
+        required: true
+        description: The username of the user.
+    get:
+      summary: Get User by Username
+      tags:
+        - User
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1users/get/responses/200/content/application~1json/schema/items"
+        "404":
+          description: Not Found
+      operationId: getUserByUsername
+      description: Returns the user with the specified username.
+  "/users/search/{searchTerm}":
+    parameters:
+      - schema:
+          type: string
+          default: ""
+        name: searchTerm
+        in: path
+        required: true
+        description: The search term.
+    get:
+      summary: Search Users by Username
+      tags:
+        - User
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/paths/~1users/get/responses/200/content/application~1json/schema/items"
+      operationId: searchUsers
+      description: Returns the users which usernames contain the searchTerm.
+  "/users/{userId}/role":
+    parameters:
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+        description: The id of the user.
+    put:
+      summary: Modify User Role by ID
+      operationId: modifyUserRole
+      responses:
+        "404":
+          description: Not Found
+        "422":
+          description: Unprocessable Entity (WebDAV)
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1users~1%7BuserId%7D/patch/responses/422/content/application~1j\
+                  son/schema"
+      tags:
+        - User
+      description: Modifies the user's role.
+      security:
+        - JWT: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: UserRoleUpdateRequest
+              type: object
+              properties:
+                role:
+                  type: string
+                  description: The new role of the user.
+                  enum:
+                    - USER
+                    - ADMIN
+              required:
+                - role
+components:
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Authentication is made by the JWT token sent in the
+        Authorizationheader of the request.
+tags:
+  - name: Asset
+  - name: User
+  - name: ApiKey
+  - name: Authentication

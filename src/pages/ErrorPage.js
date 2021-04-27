@@ -2,6 +2,7 @@ import React from 'react';
 import { Jumbotron, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Page from '../components/Page';
 import useAuthModal from '../hooks/useAuthModal';
 import useUser from '../hooks/useUser';
 
@@ -27,19 +28,21 @@ export default function ErrorPage({ statusCode, message, showLoginButton }) {
   const user = useUser();
 
   return (
-    <Jumbotron className="bg-transparent text-center">
-      <Title>{statusCode}</Title>
-      <Divider />
-      <Message>Oops! {message}</Message>
-      {showLoginButton && !user && (
-        <Button className="mr-2" onClick={showLogin}>
-          Login
+    <Page>
+      <Jumbotron className="bg-transparent text-center">
+        <Title>{statusCode}</Title>
+        <Divider />
+        <Message>Oops! {message}</Message>
+        {showLoginButton && !user && (
+          <Button className="mr-2" onClick={showLogin}>
+            Login
+          </Button>
+        )}
+        <Button as={Link} to="/">
+          Home Page
         </Button>
-      )}
-      <Button as={Link} to="/">
-        Home Page
-      </Button>
-    </Jumbotron>
+      </Jumbotron>
+    </Page>
   );
 }
 

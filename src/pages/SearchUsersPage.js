@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import useSWR, { mutate } from 'swr';
 import UserApi from '../apis/UserApi';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
+import Page from '../components/Page';
 import SubmitButton from '../components/SubmitButton';
 import useNotify from '../hooks/useNotify';
 
@@ -120,7 +121,7 @@ export default function SearchUsersPage() {
   };
 
   return (
-    <>
+    <Page>
       <DeleteConfirmationModal
         show={showDeleteConfirmation}
         onHide={() => setShowDeleteConfirmation(false)}
@@ -191,6 +192,6 @@ export default function SearchUsersPage() {
         </tbody>
       </Table>
       {users?.length === 0 && <div className="text-muted text-center">No results.</div>}
-    </>
+    </Page>
   );
 }

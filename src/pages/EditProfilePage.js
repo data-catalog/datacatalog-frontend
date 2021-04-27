@@ -3,6 +3,7 @@ import { Card } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import useSWR from 'swr';
 import UserApi from '../apis/UserApi';
+import Page from '../components/Page';
 import ProfileForm from '../components/ProfileForm';
 import { useNotify, useUser } from '../hooks';
 
@@ -37,11 +38,13 @@ export default function EditProfilePage() {
   };
 
   return (
-    <Card className="shadow-sm">
-      <Card.Header as="h1">Edit your profile</Card.Header>
-      <Card.Body>
-        <ProfileForm user={user} onSubmit={onSubmit} setValues={response?.data} />
-      </Card.Body>
-    </Card>
+    <Page>
+      <Card className="shadow-sm">
+        <Card.Header as="h1">Edit your profile</Card.Header>
+        <Card.Body>
+          <ProfileForm user={user} onSubmit={onSubmit} setValues={response?.data} />
+        </Card.Body>
+      </Card>
+    </Page>
   );
 }

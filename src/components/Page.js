@@ -1,10 +1,9 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import NotificationsSystem, { wyboTheme, useNotifications } from 'reapop';
+import NotificationsSystem, { useNotifications, wyboTheme } from 'reapop';
 import Appbar from './Appbar';
-import AuthModal from './AuthModal';
 
-const Page = ({ children }) => {
+export default function Page({ children, docs }) {
   const { notifications, dismissNotification } = useNotifications();
   return (
     <>
@@ -13,11 +12,8 @@ const Page = ({ children }) => {
         dismissNotification={(id) => dismissNotification(id)}
         theme={wyboTheme}
       />
-      <AuthModal />
-      <Appbar />
-      <Container className="my-5">{children}</Container>
+      <Appbar docs={docs} />
+      {docs ? children : <Container className="my-5">{children}</Container>}
     </>
   );
-};
-
-export default Page;
+}

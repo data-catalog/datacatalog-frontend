@@ -14,6 +14,7 @@ import AssetMembersTab from '../components/AssetMembersTab';
 import { NotFoundPage, UnauthorizedPage } from './ErrorPage';
 import AssetSourceTab from '../components/AssetSourceTab';
 import AssetUsageTab from '../components/AssetUsageTab';
+import Page from '../components/Page';
 
 const assetFetcher = (url) => AssetApi.get(url);
 
@@ -71,59 +72,61 @@ export default function AssetDetailsPage() {
   }
 
   return (
-    <Card className="shadow-sm">
-      <Card.Header as="h1">{asset.name}</Card.Header>
-      <Card.Body>
-        {canEdit && (
-          <div className="mb-4 d-flex justify-content-end">
-            <Button
-              as={Link}
-              to={`/assets/${assetId}/edit`}
-              variant="primary"
-              className="flex-grow-0 mr-2 d-flex align-items-center"
-            >
-              <MdEdit className="mr-1" />
-              Edit
-            </Button>
-            <Button
-              variant="danger"
-              className="flex-grow-0 d-flex align-items-center"
-              onClick={() => setShowDeleteConfirmation(true)}
-            >
-              <MdDelete className="mr-1" />
-              Delete
-            </Button>
-          </div>
-        )}
+    <Page>
+      <Card className="shadow-sm">
+        <Card.Header as="h1">{asset.name}</Card.Header>
+        <Card.Body>
+          {canEdit && (
+            <div className="mb-4 d-flex justify-content-end">
+              <Button
+                as={Link}
+                to={`/assets/${assetId}/edit`}
+                variant="primary"
+                className="flex-grow-0 mr-2 d-flex align-items-center"
+              >
+                <MdEdit className="mr-1" />
+                Edit
+              </Button>
+              <Button
+                variant="danger"
+                className="flex-grow-0 d-flex align-items-center"
+                onClick={() => setShowDeleteConfirmation(true)}
+              >
+                <MdDelete className="mr-1" />
+                Delete
+              </Button>
+            </div>
+          )}
 
-        <DeleteConfirmationModal
-          show={showDeleteConfirmation}
-          onHide={() => setShowDeleteConfirmation(false)}
-          onDelete={handleDelete}
-        >
-          Do you really want to delete the {asset.name} asset?
-        </DeleteConfirmationModal>
+          <DeleteConfirmationModal
+            show={showDeleteConfirmation}
+            onHide={() => setShowDeleteConfirmation(false)}
+            onDelete={handleDelete}
+          >
+            Do you really want to delete the {asset.name} asset?
+          </DeleteConfirmationModal>
 
-        <Tabs defaultActiveKey="overview" className="mb-3 border-bottom" transition={false}>
-          <Tab eventKey="overview" title="Overview">
-            <AssetOverviewTab asset={asset} />
-          </Tab>
-          <Tab eventKey="source" title="Source &amp; Versions">
-            <AssetSourceTab asset={asset} />
-          </Tab>
-          <Tab eventKey="access" title="Manage Access">
-            <AssetMembersTab
-              ownerId={asset.ownerId}
-              members={asset.members}
-              onRemoveMember={handleRemoveMember}
-              onAddMember={handleAddMember}
-            />
-          </Tab>
-          <Tab eventKey="usage" title="Usage">
-            <AssetUsageTab asset={asset} />
-          </Tab>
-        </Tabs>
-      </Card.Body>
-    </Card>
+          <Tabs defaultActiveKey="overview" className="mb-3 border-bottom" transition={false}>
+            <Tab eventKey="overview" title="Overview">
+              <AssetOverviewTab asset={asset} />
+            </Tab>
+            <Tab eventKey="source" title="Source &amp; Versions">
+              <AssetSourceTab asset={asset} />
+            </Tab>
+            <Tab eventKey="access" title="Manage Access">
+              <AssetMembersTab
+                ownerId={asset.ownerId}
+                members={asset.members}
+                onRemoveMember={handleRemoveMember}
+                onAddMember={handleAddMember}
+              />
+            </Tab>
+            <Tab eventKey="usage" title="Usage">
+              <AssetUsageTab asset={asset} />
+            </Tab>
+          </Tabs>
+        </Card.Body>
+      </Card>
+    </Page>
   );
 }

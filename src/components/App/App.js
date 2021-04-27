@@ -6,13 +6,14 @@ import { AuthModalProvider } from '../../context/AuthModalContext';
 import AssetDetailsPage from '../../pages/AssetDetailsPage';
 import AssetSearchPage from '../../pages/AssetSearchPage';
 import CreateAssetPage from '../../pages/CreateAssetPage';
+import DocumentationPage from '../../pages/DocumentationPage';
 import EditAssetPage from '../../pages/EditAssetPage';
 import EditProfilePage from '../../pages/EditProfilePage';
 import ErrorPage from '../../pages/ErrorPage';
 import HomePage from '../../pages/HomePage';
 import SearchUsersPage from '../../pages/SearchUsersPage';
 import UserAssetsPage from '../../pages/UserAssetsPage';
-import Page from '../Page';
+import AuthModal from '../AuthModal';
 import ProtectedRoute from '../ProtectedRoute';
 
 const App = () => {
@@ -24,45 +25,51 @@ const App = () => {
       dismissAfter: 3000,
     },
   });
+
   return (
     <Router>
       <NotificationsProvider>
         <AuthProvider>
           <AuthModalProvider>
-            <Page>
-              <Switch>
-                <Route exact path="/">
-                  <HomePage />
-                </Route>
-                <ProtectedRoute onlyAdmin path="/users/search/:searchTerm?">
-                  <SearchUsersPage />
-                </ProtectedRoute>
+            <AuthModal />
 
-                <ProtectedRoute exact path="/user/assets">
-                  <UserAssetsPage />
-                </ProtectedRoute>
-                <ProtectedRoute exact path="/user/settings">
-                  <EditProfilePage />
-                </ProtectedRoute>
+            <Switch>
+              <Route exact path="/docs">
+                <DocumentationPage />
+              </Route>
 
-                <ProtectedRoute exact path="/assets/create">
-                  <CreateAssetPage />
-                </ProtectedRoute>
-                <Route path="/assets/search/:searchTerm?">
-                  <AssetSearchPage />
-                </Route>
-                <Route exact path="/assets/:assetId">
-                  <AssetDetailsPage />
-                </Route>
-                <ProtectedRoute path="/assets/:assetId/edit">
-                  <EditAssetPage />
-                </ProtectedRoute>
+              <Route exact path="/">
+                <HomePage />
+              </Route>
 
-                <Route path="*">
-                  <ErrorPage />
-                </Route>
-              </Switch>
-            </Page>
+              <ProtectedRoute onlyAdmin path="/users/search/:searchTerm?">
+                <SearchUsersPage />
+              </ProtectedRoute>
+
+              <ProtectedRoute exact path="/user/assets">
+                <UserAssetsPage />
+              </ProtectedRoute>
+              <ProtectedRoute exact path="/user/settings">
+                <EditProfilePage />
+              </ProtectedRoute>
+
+              <ProtectedRoute exact path="/assets/create">
+                <CreateAssetPage />
+              </ProtectedRoute>
+              <Route path="/assets/search/:searchTerm?">
+                <AssetSearchPage />
+              </Route>
+              <Route exact path="/assets/:assetId">
+                <AssetDetailsPage />
+              </Route>
+              <ProtectedRoute path="/assets/:assetId/edit">
+                <EditAssetPage />
+              </ProtectedRoute>
+
+              <Route path="*">
+                <ErrorPage />
+              </Route>
+            </Switch>
           </AuthModalProvider>
         </AuthProvider>
       </NotificationsProvider>
