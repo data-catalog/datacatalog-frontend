@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import { MdSearch, MdMenu } from 'react-icons/md';
 import { useAuthFunctions, useUser, useNotify, useAuthModal } from '../hooks';
 
-function LoggedInSection() {
+function LoggedInDropdown() {
   const { logout } = useAuthFunctions();
   const notify = useNotify();
 
@@ -40,7 +40,7 @@ function LoggedInSection() {
   );
 }
 
-function GuestSection() {
+function GuestDropdown() {
   const { showLogin } = useAuthModal();
 
   return (
@@ -50,6 +50,36 @@ function GuestSection() {
           Login
         </Button>
       </NavDropdown.Item>
+    </>
+  );
+}
+
+function GuestNavs() {
+  return (
+    <>
+      <Nav.Link as={Link} to="/assets/search">
+        Library
+      </Nav.Link>
+    </>
+  );
+}
+
+function UserNavs() {
+  return (
+    <>
+      <Nav.Link as={Link} to="/assets/create">
+        Create Asset
+      </Nav.Link>
+    </>
+  );
+}
+
+function AdminNavs() {
+  return (
+    <>
+      <Nav.Link as={Link} to="/users/search">
+        Manage Users
+      </Nav.Link>
     </>
   );
 }
@@ -87,19 +117,14 @@ export default function Appbar() {
         </Navbar.Toggle>
         <Navbar.Collapse>
           <Nav className="ml-auto">
-            <Nav.Link as={Link} to="/assets/create">
-              Create Asset
-            </Nav.Link>
-            <Nav.Link as={Link} to="/assets/search">
-              Library
-            </Nav.Link>
-            <Nav.Link as={Link} to="/users/search">
-              Manage Users
-            </Nav.Link>
+            {user && <UserNavs />}
+            <GuestNavs />
+            {user?.role === 'ADMIN' && <AdminNavs />}
+
             <NavDropdown alignRight title="Account" id="nav-dropdown">
               <NavDropdown.Header className="text-center">Welcome, {user?.username || 'user'}!</NavDropdown.Header>
               <NavDropdown.Divider />
-              {user ? <LoggedInSection user={user} /> : <GuestSection />}
+              {user ? <LoggedInDropdown user={user} /> : <GuestDropdown />}
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

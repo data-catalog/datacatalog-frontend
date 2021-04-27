@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import useSWR, { mutate, trigger } from 'swr';
-import { Button, ButtonGroup, Card, Tabs, Tab } from 'react-bootstrap';
+import { Button, Card, Tabs, Tab } from 'react-bootstrap';
 
 import AssetApi from '../apis/AssetApi';
 import UserApi from '../apis/UserApi';
@@ -12,6 +12,8 @@ import ThreeSpinner from '../components/ThreeSpinner';
 import AssetOverviewTab from '../components/AssetOverviewTab';
 import AssetMembersTab from '../components/AssetMembersTab';
 import { NotFoundPage, UnauthorizedPage } from './ErrorPage';
+import AssetSourceTab from '../components/AssetSourceTab';
+import AssetUsageTab from '../components/AssetUsageTab';
 
 const assetFetcher = (url) => AssetApi.get(url);
 
@@ -73,16 +75,25 @@ export default function AssetDetailsPage() {
       <Card.Header as="h1">{asset.name}</Card.Header>
       <Card.Body>
         {canEdit && (
-          <ButtonGroup className="mb-4 d-flex justify-content-end">
-            <Button as={Link} to={`/assets/${assetId}/edit`} variant="primary" className="flex-grow-0">
+          <div className="mb-4 d-flex justify-content-end">
+            <Button
+              as={Link}
+              to={`/assets/${assetId}/edit`}
+              variant="primary"
+              className="flex-grow-0 mr-2 d-flex align-items-center"
+            >
               <MdEdit className="mr-1" />
               Edit
             </Button>
-            <Button variant="danger" className="flex-grow-0" onClick={() => setShowDeleteConfirmation(true)}>
+            <Button
+              variant="danger"
+              className="flex-grow-0 d-flex align-items-center"
+              onClick={() => setShowDeleteConfirmation(true)}
+            >
               <MdDelete className="mr-1" />
               Delete
             </Button>
-          </ButtonGroup>
+          </div>
         )}
 
         <DeleteConfirmationModal
@@ -93,12 +104,12 @@ export default function AssetDetailsPage() {
           Do you really want to delete the {asset.name} asset?
         </DeleteConfirmationModal>
 
-        <Tabs defaultActiveKey="overview" className="mb-3 border-bottom">
+        <Tabs defaultActiveKey="overview" className="mb-3 border-bottom" transition={false}>
           <Tab eventKey="overview" title="Overview">
             <AssetOverviewTab asset={asset} />
           </Tab>
-          <Tab eventKey="source" title="Source">
-            aaa
+          <Tab eventKey="source" title="Source &amp; Versions">
+            <AssetSourceTab asset={asset} />
           </Tab>
           <Tab eventKey="access" title="Manage Access">
             <AssetMembersTab
@@ -109,7 +120,7 @@ export default function AssetDetailsPage() {
             />
           </Tab>
           <Tab eventKey="usage" title="Usage">
-            uuu
+            <AssetUsageTab asset={asset} />
           </Tab>
         </Tabs>
       </Card.Body>

@@ -13,11 +13,11 @@ export default function CopyToClipboardButton({ textToCopy, children, ...props }
 
   return (
     <>
-      <Button {...props} ref={target} onClick={handleClick} data-tip data-for="copy-tip">
+      <Button {...props} ref={target} onClick={handleClick} data-tip data-for={textToCopy}>
         {children}
       </Button>
       <ReactTooltip
-        id="copy-tip"
+        id={textToCopy}
         place="bottom"
         effect="solid"
         event="focusin"
