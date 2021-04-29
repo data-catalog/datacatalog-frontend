@@ -51,6 +51,9 @@ function GuestDropdown() {
 function GuestNavs() {
   return (
     <>
+      <Nav.Link as={Link} to="/docs">
+        Documentation
+      </Nav.Link>
       <Nav.Link as={Link} to="/assets/search">
         Library
       </Nav.Link>

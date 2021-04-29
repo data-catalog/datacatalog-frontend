@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { NotificationsProvider, setUpNotifications } from 'reapop';
 import { AuthProvider } from '../../context/AuthContext';
 import { AuthModalProvider } from '../../context/AuthModalContext';
@@ -35,7 +35,16 @@ const App = () => {
 
             <Switch>
               <Route exact path="/docs">
-                <DocumentationPage />
+                <Redirect to="/docs/asset" />
+              </Route>
+              <Route exact path="/docs/asset">
+                <DocumentationPage api="asset" />
+              </Route>
+              <Route exact path="/docs/user">
+                <DocumentationPage api="user" />
+              </Route>
+              <Route exact path="/docs/versioning">
+                <DocumentationPage api="versioning" />
               </Route>
 
               <Route exact path="/">

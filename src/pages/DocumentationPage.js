@@ -2,14 +2,20 @@ import React from 'react';
 import { RedocStandalone } from 'redoc';
 import Page from '../components/Page';
 
-export default function DocumentationPage() {
+const docPaths = {
+  user: '/docs/user-api/User.yaml',
+  asset: '/docs/asset-api/Asset.yaml',
+  versioning: '/docs/versioning-api/VersioningApi.yaml',
+};
+
+export default function DocumentationPage({ api }) {
   return (
     <Page docs>
       <RedocStandalone
-        specUrl="/result.yaml"
+        specUrl={docPaths[api]}
         options={{
           nativeScrollbars: true,
-          theme: { colors: { primary: { main: '#dd5522' } } },
+          theme: { colors: { primary: { main: '#03445e' } } },
         }}
       />
     </Page>
