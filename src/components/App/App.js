@@ -65,7 +65,7 @@ const App = () => {
               <ProtectedRoute exact path="/assets/create">
                 <CreateAssetPage />
               </ProtectedRoute>
-              <Route path="/assets/search/:searchTerm?">
+              <Route path={['/assets', '/assets/search/:searchTerm?']}>
                 <AssetSearchPage />
               </Route>
               <Route exact path="/assets/:assetId">

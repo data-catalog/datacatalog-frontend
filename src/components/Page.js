@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import NotificationsSystem, { useNotifications, wyboTheme } from 'reapop';
 import Appbar from './Appbar';
 
-export default function Page({ children, docs }) {
+export default function Page({ children, variant }) {
   const { notifications, dismissNotification } = useNotifications();
   return (
     <>
@@ -12,8 +12,12 @@ export default function Page({ children, docs }) {
         dismissNotification={(id) => dismissNotification(id)}
         theme={wyboTheme}
       />
-      <Appbar docs={docs} />
-      {docs ? children : <Container className="my-5">{children}</Container>}
+      <Appbar variant={variant} />
+      {variant === 'normal' ? <Container className="my-5">{children}</Container> : children}
     </>
   );
 }
+
+Page.defaultProps = {
+  variant: 'normal',
+};

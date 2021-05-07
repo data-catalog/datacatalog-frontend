@@ -81,7 +81,7 @@ function AdminNavs() {
   );
 }
 
-export default function NavItems({ docs }) {
+export default function NavItems({ variant }) {
   const user = useUser();
 
   return (
@@ -90,7 +90,7 @@ export default function NavItems({ docs }) {
         <MdMenu />
       </Navbar.Toggle>
       <Navbar.Collapse>
-        {docs && (
+        {variant === 'docs' && (
           <Nav className="mx-auto">
             <Nav.Link as={Link} to="/docs/user">
               User Service API

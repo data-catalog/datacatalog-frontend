@@ -10,7 +10,7 @@ const docPaths = {
 
 export default function DocumentationPage({ api }) {
   return (
-    <Page docs>
+    <Page variant="docs">
       <RedocStandalone
         specUrl={docPaths[api]}
         options={{

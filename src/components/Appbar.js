@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import { MdSearch } from 'react-icons/md';
 import NavItems from './NavItems';
 
-export default function Appbar({ docs }) {
+export default function Appbar({ variant }) {
   const history = useHistory();
 
   const handleSearch = (e) => {
@@ -22,7 +22,7 @@ export default function Appbar({ docs }) {
         Data Catalog
       </Navbar.Brand>
 
-      {!docs && (
+      {['normal', 'landing'].includes(variant) && (
         <Form inline onSubmit={handleSearch}>
           <InputGroup size="sm">
             <InputGroup.Prepend>
@@ -35,7 +35,7 @@ export default function Appbar({ docs }) {
         </Form>
       )}
 
-      <NavItems docs={docs} />
+      <NavItems variant={variant} />
     </Navbar>
   );
 }
