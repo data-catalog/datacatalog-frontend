@@ -15,6 +15,7 @@ import { NotFoundPage, UnauthorizedPage } from './ErrorPage';
 import AssetSourceTab from '../components/AssetSourceTab';
 import AssetUsageTab from '../components/AssetUsageTab';
 import Page from '../components/Page';
+import VersionApi from '../apis/VersionApi';
 
 const assetFetcher = (url) => AssetApi.get(url);
 
@@ -57,6 +58,11 @@ export default function AssetDetailsPage() {
       await AssetApi.patch(`/assets/${asset.id}`, { members: [...asset.members, userId] });
       mutate(`/assets/${asset.id}`);
     }
+  };
+
+  const handleCreateVersion = async (name) => {
+    await VersionApi.post(`/assets/${asset.id}/versions`, { name });
+    mutate(`/assets/${asset.id}/versions`);
   };
 
   if ([401, 403].includes(error?.response.status)) {
@@ -111,7 +117,7 @@ export default function AssetDetailsPage() {
               <AssetOverviewTab asset={asset} />
             </Tab>
             <Tab eventKey="source" title="Source &amp; Versions">
-              <AssetSourceTab asset={asset} />
+              <AssetSourceTab asset={asset} onCreateVersion={handleCreateVersion} />
             </Tab>
             <Tab eventKey="access" title="Manage Access">
               <AssetMembersTab

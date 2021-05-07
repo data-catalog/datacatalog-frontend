@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import { MdCheck, MdClose, MdRemoveCircleOutline } from 'react-icons/md';
 import { Button, Card, Form, InputGroup, Table } from 'react-bootstrap';
 import UserApi from '../apis/UserApi';
+import AddForm from './AddForm';
+import SubmitButton from './SubmitButton';
 
 const RemoveButton = styled(Button)`
   display: inline-flex;
@@ -23,10 +25,6 @@ const RemoveButton = styled(Button)`
   }
 `;
 
-const StyledFormGroup = styled(Form.Group)`
-  width: min(100%, 20rem);
-`;
-
 const userFetcher = (url) => UserApi.get(url);
 
 const validationSchema = Yup.object().shape({
@@ -37,15 +35,20 @@ export default function MembersTab({ ownerId, members, onRemoveMember, onAddMemb
   const { data } = useSWR(`/users/show_many?ids=${[ownerId, ...members].join(',')}`, userFetcher);
   const users = data?.data;
 
-  const { register, errors, handleSubmit, reset, setError } = useForm({ resolver: yupResolver(validationSchema) });
+  const {
+    register,
+    errors,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { isSubmitting },
+  } = useForm({ resolver: yupResolver(validationSchema) });
 
   const onSubmit = async ({ username }) => {
     try {
       await onAddMember(username);
       reset();
     } catch (err) {
-      console.dir(err);
-
       let message;
       if (err.response.status === 404) {
         message = 'User not found.';
@@ -104,29 +107,27 @@ export default function MembersTab({ ownerId, members, onRemoveMember, onAddMemb
             ))}
         </tbody>
       </Table>
+      <AddForm onSubmit={handleSubmit(onSubmit)}>
+        <Form.Label as="h6" className="mb-3">
+          Add a new member
+        </Form.Label>
 
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <StyledFormGroup>
-          <Form.Label as="h6" className="mb-3">
-            Add a new member
-          </Form.Label>
-          <InputGroup>
-            <Form.Control
-              type="text"
-              name="username"
-              placeholder="Username"
-              ref={register}
-              isInvalid={!!errors.username}
-            />
-            <InputGroup.Append>
-              <Button type="submit" variant="success" className="rounded-right">
-                Add
-              </Button>
-            </InputGroup.Append>
-            <Form.Control.Feedback type="invalid">{errors?.username?.message}</Form.Control.Feedback>
-          </InputGroup>
-        </StyledFormGroup>
-      </Form>
+        <InputGroup>
+          <Form.Control
+            type="text"
+            name="username"
+            placeholder="Username"
+            ref={register}
+            isInvalid={!!errors.username}
+          />
+          <InputGroup.Append>
+            <SubmitButton type="submit" variant="success" className="rounded-right" isSubmitting={isSubmitting}>
+              Add
+            </SubmitButton>
+          </InputGroup.Append>
+          <Form.Control.Feedback type="invalid">{errors?.username?.message}</Form.Control.Feedback>
+        </InputGroup>
+      </AddForm>
     </>
   );
 }
