@@ -4,12 +4,29 @@ import { Link } from 'react-router-dom';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import python from 'react-syntax-highlighter/dist/esm/languages/hljs/python';
 import highlightStyle from 'react-syntax-highlighter/dist/esm/styles/hljs/stackoverflow-light';
-import { useUser } from '../hooks';
 
 SyntaxHighlighter.registerLanguage('python', python);
 
 export default function AssetUsageTab({ asset }) {
-  const user = useUser();
+  const downloadCode = `
+    from data_catalog import DataCatalog
+
+    with DataCatalog(api_key=<your_api_key>) as service:
+        asset = service.get_asset('${asset?.id}')
+        dataframe = asset.get_data() # returns a Pandas dataframe
+
+        print(dataframe)
+    `;
+
+  const versionCode = `
+    from data_catalog import DataCatalog
+
+    with DataCatalog(api_key=<your_api_key>) as service:
+        asset = service.get_asset('${asset?.id}')
+        versions = asset.list_versions(output_format='list')
+
+        print(versions)
+    `;
 
   return (
     <>
@@ -17,22 +34,12 @@ export default function AssetUsageTab({ asset }) {
 
       <h6>Example of downloading the asset content through the python library:</h6>
       <SyntaxHighlighter language="python" style={highlightStyle} className="rounded shadow-sm">
-        {`
-            from data_catalog.assets import AssetService
-
-            with AssetService(username=${user.username}, password=<your_password>) as asset_service:
-              asset = asset_service.get_asset('${asset?.id}')
-              dataframe = asset.get_data() # returns a Pandas dataframe
-
-              print(dataframe)
-          `}
+        {downloadCode}
       </SyntaxHighlighter>
 
-      <h6>Example of downloading an older version of the asset through the python library:</h6>
+      <h6>Example of listing all the available versions of the asset through the python library:</h6>
       <SyntaxHighlighter language="python" style={highlightStyle} className="rounded shadow-sm">
-        {`
-            # TODO
-          `}
+        {versionCode}
       </SyntaxHighlighter>
 
       <em>
