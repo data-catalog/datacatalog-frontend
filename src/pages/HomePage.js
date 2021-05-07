@@ -50,9 +50,12 @@ const HomePage = () => {
     <Page variant="landing">
       <Wrapper>
         <Title>
-          <h1>Find, create, and manage datasets.</h1>
+          <h1 className="display-4">Welcome to Data Catalog!</h1>
 
-          <p>Desc.</p>
+          <p className="lead">
+            Looking for the right way to magnage data? This tool will help you create and manage your datasets, and also
+            find new ones.
+          </p>
           <p>
             <Link to="/assets/search">
               <Button size="lg">Explore assets</Button>
