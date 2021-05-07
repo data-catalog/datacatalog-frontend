@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 
@@ -115,7 +115,7 @@ function AzureBlobFields({ register, errors }) {
 }
 
 // eslint-disable-next-line max-lines-per-function
-export default function AssetForm({ type, setValues, onSubmit, onCancel }) {
+export default function AssetForm({ type, defaultValues, onSubmit, onCancel }) {
   const {
     register,
     handleSubmit,
@@ -123,12 +123,9 @@ export default function AssetForm({ type, setValues, onSubmit, onCancel }) {
     formState: { isSubmitting },
     control,
     watch,
-    reset,
-  } = useForm({ resolver: yupResolver(validationSchema) });
+  } = useForm({ resolver: yupResolver(validationSchema), defaultValues });
 
   const locationType = watch('location.type');
-
-  useEffect(() => setValues && reset(setValues), [setValues, reset]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

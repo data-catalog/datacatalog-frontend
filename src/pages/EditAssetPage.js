@@ -7,6 +7,8 @@ import AssetApi from '../apis/AssetApi';
 import AssetForm from '../components/AssetForm';
 import useNotify from '../hooks/useNotify';
 import Page from '../components/Page';
+import { NotFoundPage, UnauthorizedPage } from './ErrorPage';
+import ThreeSpinner from '../components/ThreeSpinner';
 
 const fetcher = (url) => AssetApi.get(url);
 
@@ -14,7 +16,7 @@ export default function EditAssetPage() {
   const history = useHistory();
   const notify = useNotify();
   const { assetId } = useParams();
-  const { data: response } = useSWR(`/assets/${assetId}`, fetcher, {
+  const { error, data: response } = useSWR(`/assets/${assetId}`, fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });
@@ -39,12 +41,24 @@ export default function EditAssetPage() {
 
   const onCancel = () => history.push(`/assets/${assetId}`);
 
+  if ([401, 403].includes(error?.response.status)) {
+    return <UnauthorizedPage />;
+  }
+
+  if (error?.response.status === 404) {
+    return <NotFoundPage />;
+  }
+
+  if (!response) {
+    return <ThreeSpinner size="lg" />;
+  }
+
   return (
     <Page>
       <Card className="shadow-sm">
         <Card.Header as="h1">Edit asset</Card.Header>
         <Card.Body>
-          <AssetForm type="edit" setValues={response?.data} onSubmit={onSubmit} onCancel={onCancel} />
+          <AssetForm type="edit" defaultValues={response.data} onSubmit={onSubmit} onCancel={onCancel} />
         </Card.Body>
       </Card>
     </Page>
