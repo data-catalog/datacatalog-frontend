@@ -27,7 +27,7 @@ export default function AssetCard({ asset }) {
         </Button>
       </Card.Body>
       <Card.Footer>
-        <small className="text-muted">Last updated {dayjs.unix(asset.updatedAt).fromNow()}</small>
+        <small className="text-muted">Last updated {dayjs(asset.updatedAt).fromNow()}</small>
       </Card.Footer>
     </Card>
   );
