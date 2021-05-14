@@ -8,9 +8,13 @@ const UserApi = axios.create({
   },
 });
 
-const token = localStorage.getItem('access_token');
-if (token) {
-  UserApi.defaults.headers.Authorization = `Bearer ${token}`;
-}
+UserApi.interceptors.request.use((req) => {
+  const token = localStorage.getItem('access_token');
 
+  if (token) {
+    req.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return req;
+});
 export default UserApi;

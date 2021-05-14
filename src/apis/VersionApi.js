@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-const AssetApi = axios.create({
-  baseURL: 'https://assethandlingservice.azurewebsites.net',
+const VersionApi = axios.create({
+  baseURL: 'https://versioningservice.azurewebsites.net',
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
   },
 });
 
-AssetApi.interceptors.request.use((req) => {
+VersionApi.interceptors.request.use((req) => {
   const token = localStorage.getItem('access_token');
 
   if (token) {
@@ -18,4 +18,4 @@ AssetApi.interceptors.request.use((req) => {
   return req;
 });
 
-export default AssetApi;
+export default VersionApi;
