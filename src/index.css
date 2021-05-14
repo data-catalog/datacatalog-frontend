@@ -29,3 +29,7 @@ kbd {
 .cursor-not-allowed {
   cursor: not-allowed !important;
 }
+
+.cursor-auto {
+  cursor: auto !important;
+}

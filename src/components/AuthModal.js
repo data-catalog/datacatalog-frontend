@@ -10,9 +10,11 @@ function LoginModal({ show, onHide, onSwitchModal }) {
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">Please Log in</Modal.Title>
       </Modal.Header>
+
       <Modal.Body>
         <LoginForm onSuccess={onHide} />
       </Modal.Body>
+
       <Modal.Footer className="justify-content-start">
         Don&apos;t have an account yet? Join{' '}
         <Button className="p-0 align-baseline" variant="link" onClick={onSwitchModal}>
