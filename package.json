@@ -55,8 +55,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:coverage": "react-scripts test --coverage --runInBand --watchAll=false --testResultsProcessor jest-sonar-reporter",
-    "eject": "react-scripts eject",
-    "postbuild": "node iisConfig/copyIISConfig.js"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
