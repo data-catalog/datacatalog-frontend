@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const AssetApi = axios.create({
-  baseURL: 'https://assethandlingservice.azurewebsites.net',
+  baseURL: process.env.REACT_APP_ASSET_API_ENDPOINT,
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const UserApi = axios.create({
-  baseURL: 'https://userhandlingservice.azurewebsites.net',
+  baseURL: process.env.REACT_APP_USER_API_ENDPOINT,
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
