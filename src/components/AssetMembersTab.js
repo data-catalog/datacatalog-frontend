@@ -4,26 +4,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ReactTooltip from 'react-tooltip';
 import useSWR from 'swr';
 import * as Yup from 'yup';
-import styled from 'styled-components';
 import { MdCheck, MdClose, MdRemoveCircleOutline } from 'react-icons/md';
-import { Button, Card, Form, InputGroup, Table } from 'react-bootstrap';
+import { Card, Form, InputGroup, Table } from 'react-bootstrap';
 import UserApi from '../apis/UserApi';
 import AddForm from './AddForm';
 import SubmitButton from './SubmitButton';
-
-const RemoveButton = styled(Button)`
-  display: inline-flex;
-  align-items: baseline;
-  background: none;
-  border: none;
-  color: var(--dark);
-
-  &:hover {
-    background: none;
-    border: none;
-    color: var(--danger);
-  }
-`;
+import RemoveButton from './RemoveButton';
 
 const userFetcher = (url) => UserApi.get(url);
 

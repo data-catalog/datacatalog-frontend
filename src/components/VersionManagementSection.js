@@ -6,9 +6,13 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import useSWR from 'swr';
 import * as Yup from 'yup';
+import { MdDelete } from 'react-icons/md';
+import { notify } from 'reapop';
 import VersionApi from '../apis/VersionApi';
 import AddForm from './AddForm';
 import SubmitButton from './SubmitButton';
+import useUser from '../hooks/useUser';
+import RemoveButton from './RemoveButton';
 
 const versionFetcher = (url) => VersionApi.get(url);
 
@@ -32,23 +36,43 @@ export default function VersionManagementSection({ asset, onCreateVersion }) {
     resolver: yupResolver(validationSchema),
   });
 
+  const onDeleteVersion = async (name) => {
+    try {
+      await VersionApi.delete(`/assets/${asset.id}/versions/${name}`);
+      mutate();
+    } catch (err) {
+      if (err.response.status === 404) {
+        notify('Asset not found.');
+      } else if ([401, 403].includes(err?.response.status)) {
+        notify('You do not have permission to delete asset versions.');
+      } else {
+        notify('Could not delete asset version. Please try again later.');
+      }
+    }
+  };
+
   const onSubmit = async ({ name }) => {
     try {
       await onCreateVersion(name);
+      mutate();
       reset();
     } catch (err) {
       let message;
       if (err.response.status === 404) {
-        message = 'User not found.';
-      } else if ([401, 403].includes(err.response.status)) {
-        message = 'You do not have permission to add members.';
+        message = 'Asset not found.';
+      } else if ([401, 403].includes(err?.response.status)) {
+        message = 'You do not have permission to create a version.';
       } else {
-        message = 'Could not add the user to the asset. Please try again later.';
+        message = 'Could not create the asset version. Please try again later.';
       }
 
       setError('username', { message });
     }
   };
+
+  const user = useUser();
+
+  const canDelete = asset.ownerId === user?.userId || asset.members.includes(user?.userId);
 
   return (
     <>
@@ -60,6 +84,7 @@ export default function VersionManagementSection({ asset, onCreateVersion }) {
             <th>#</th>
             <th>Version name</th>
             <th>Created at</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -67,12 +92,29 @@ export default function VersionManagementSection({ asset, onCreateVersion }) {
             <td>-</td>
             <td>Current</td>
             <td>Latest version</td>
+            <td>
+              <em className="text-muted">No actions.</em>
+            </td>
           </tr>
           {versions?.map((version) => (
-            <tr key={version.id}>
-              <td>{version.id}</td>
+            <tr key={version.name}>
+              <td>-</td>
               <td>{version.name}</td>
               <td>{version.createdAt}</td>
+              <td>
+                {canDelete ? (
+                  <RemoveButton
+                    variant="light"
+                    data-tip
+                    data-for={`${user.id}-tip`}
+                    onClick={() => onDeleteVersion(version.name)}
+                  >
+                    <MdDelete size={20} />
+                  </RemoveButton>
+                ) : (
+                  <em className="text-muted">No actions.</em>
+                )}
+              </td>
             </tr>
           ))}
           {versions?.length === 0 && (
