@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 
@@ -18,14 +18,7 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().default(''),
   location: Yup.object().shape({
     type: Yup.string().required('Source type not selected.').oneOf(['url', 'azureblob'], 'Invalid source type.'),
-    parameters: Yup.array().of(
-      Yup.object()
-        .shape({
-          key: Yup.string(),
-          value: Yup.string(),
-        })
-        .default([])
-    ),
+    parameters: Yup.object().default({}),
   }),
 });
 
@@ -33,15 +26,14 @@ function UrlFields({ register, errors }) {
   return (
     <Form.Group>
       <Form.Label>URL</Form.Label>
-      <Form.Control type="hidden" name="location.parameters[0].key" value="url" ref={register} />
       <Form.Control
         type="text"
-        name="location.parameters[0].value"
+        name="location.parameters[url]"
         placeholder="Source URL"
         ref={register}
-        isInvalid={!!errors?.location?.parameters?.[0]?.value}
+        isInvalid={!!errors?.location?.parameters?.url}
       />
-      <Form.Control.Feedback type="invalid">{errors?.location?.parameters?.[0]?.value?.message}</Form.Control.Feedback>
+      <Form.Control.Feedback type="invalid">{errors?.location?.parameters?.url.message}</Form.Control.Feedback>
     </Form.Group>
   );
 }
@@ -51,63 +43,53 @@ function AzureBlobFields({ register, errors }) {
     <>
       <Form.Group>
         <Form.Label>Storage account URL</Form.Label>
-        <Form.Control type="hidden" name="location.parameters[0].key" value="accountUrl" ref={register} />
         <Form.Control
           type="text"
-          name="location.parameters[0].value"
+          name="location.parameters[accountUrl]"
           placeholder="Storage Account URL"
           ref={register}
-          isInvalid={!!errors?.location?.parameters?.[0]?.value}
+          isInvalid={!!errors?.location?.parameters?.accountUrl}
         />
-        <Form.Control.Feedback type="invalid">
-          {errors?.location?.parameters?.[0]?.value?.message}
-        </Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">{errors?.location?.parameters?.accountUrl.message}</Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group>
         <Form.Label>Container name</Form.Label>
-        <Form.Control type="hidden" name="location.parameters[1].key" value="containerName" ref={register} />
         <Form.Control
           type="text"
-          name="location.parameters[1].value"
+          name="location.parameters[containerName]"
           placeholder="Container name"
           ref={register}
-          isInvalid={!!errors?.location?.parameters?.[1]?.value}
+          isInvalid={!!errors?.location?.parameters?.containerName}
         />
         <Form.Control.Feedback type="invalid">
-          {errors?.location?.parameters?.[1]?.value?.message}
+          {errors?.location?.parameters?.containerName.message}
         </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group>
         <Form.Label>Shared Access Signature (SAS token)</Form.Label>
-        <Form.Control type="hidden" name="location.parameters[2].key" value="sasToken" ref={register} />
         <Form.Control
           type="text"
-          name="location.parameters[2].value"
+          name="location.parameters[sasToken]"
           placeholder="SAS token"
           ref={register}
-          isInvalid={!!errors?.location?.parameters?.[2]?.value}
+          isInvalid={!!errors?.location?.parameters?.sasToken}
         />
-        <Form.Control.Feedback type="invalid">
-          {errors?.location?.parameters?.[2]?.value?.message}
-        </Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">{errors?.location?.parameters?.sasToken.message}</Form.Control.Feedback>
         <Form.Text className="text-muted">Only required if the account key is not specified.</Form.Text>
       </Form.Group>
 
       <Form.Group>
         <Form.Label>Account key</Form.Label>
-        <Form.Control type="hidden" name="location.parameters[3].key" value="accountKey" ref={register} />
         <Form.Control
           type="text"
-          name="location.parameters[3].value"
+          name="location.parameters[accountKey]"
           placeholder="Account key"
           ref={register}
-          isInvalid={!!errors?.location?.parameters?.[3]?.value}
+          isInvalid={!!errors?.location?.parameters?.accountKey}
         />
-        <Form.Control.Feedback type="invalid">
-          {errors?.location?.parameters?.[3]?.value?.message}
-        </Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">{errors?.location?.parameters?.accountKey.message}</Form.Control.Feedback>
         <Form.Text className="text-muted">Only required if the SAS token is not specified.</Form.Text>
       </Form.Group>
     </>
@@ -116,6 +98,23 @@ function AzureBlobFields({ register, errors }) {
 
 // eslint-disable-next-line max-lines-per-function
 export default function AssetForm({ type, defaultValues, onSubmit, onCancel }) {
+  const internalDefaultValues = useMemo(
+    () =>
+      defaultValues
+        ? {
+            ...defaultValues,
+            location: {
+              ...defaultValues.location,
+              parameters: defaultValues.location.parameters.reduce(
+                (acc, parameter) => ({ ...acc, [parameter.key]: parameter.value }),
+                {}
+              ),
+            },
+          }
+        : null,
+    [defaultValues]
+  );
+
   const {
     register,
     handleSubmit,
@@ -123,12 +122,24 @@ export default function AssetForm({ type, defaultValues, onSubmit, onCancel }) {
     formState: { isSubmitting },
     control,
     watch,
-  } = useForm({ resolver: yupResolver(validationSchema), defaultValues });
+  } = useForm({ resolver: yupResolver(validationSchema), defaultValues: internalDefaultValues });
 
   const locationType = watch('location.type');
 
+  const internalOnSubmit = (data) => {
+    return onSubmit({
+      ...data,
+      location: {
+        ...data.location,
+        parameters: Object.entries(data.location.parameters)
+          .filter(([, value]) => value !== '')
+          .map(([key, value]) => ({ key, value })),
+      },
+    });
+  };
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(internalOnSubmit)}>
       <Card.Title>General information</Card.Title>
 
       <Form.Group>

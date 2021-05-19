@@ -30,12 +30,10 @@ export default function EditAssetPage() {
       if (err.response?.status === 401) {
         notify('You are not allowed to edit this asset.', 'error');
       } else if (err.response?.status === 422) {
-        notify(err.response?.data.message);
+        notify(err.response?.data.message, 'error');
       } else {
         notify('Something went wrong, please try again.', 'error');
       }
-    } finally {
-      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     }
   };
 
