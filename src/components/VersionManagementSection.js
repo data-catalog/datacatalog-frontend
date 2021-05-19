@@ -8,6 +8,7 @@ import useSWR from 'swr';
 import * as Yup from 'yup';
 import { MdDelete } from 'react-icons/md';
 import { notify } from 'reapop';
+import dayjs from 'dayjs';
 import VersionApi from '../apis/VersionApi';
 import AddForm from './AddForm';
 import SubmitButton from './SubmitButton';
@@ -66,7 +67,7 @@ export default function VersionManagementSection({ asset, onCreateVersion }) {
         message = 'Could not create the asset version. Please try again later.';
       }
 
-      setError('username', { message });
+      setError('name', { message });
     }
   };
 
@@ -100,7 +101,7 @@ export default function VersionManagementSection({ asset, onCreateVersion }) {
             <tr key={version.name}>
               <td>-</td>
               <td>{version.name}</td>
-              <td>{version.createdAt}</td>
+              <td>{dayjs.unix(version.createdAt).format('MMMM DD, YYYY h:mm A')}</td>
               <td>
                 {canDelete ? (
                   <RemoveButton
