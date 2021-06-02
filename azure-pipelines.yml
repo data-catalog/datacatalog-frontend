@@ -21,6 +21,9 @@ steps:
       versionSpec: "12.x"
     displayName: "Install Node.js"
 
+  - script: git submodule update --recursive --init
+    displayName: "Download submodules"
+
   - script: |
       pushd $(uiSource)
       npm install

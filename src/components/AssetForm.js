@@ -111,7 +111,7 @@ export default function AssetForm({ type, defaultValues, onSubmit, onCancel }) {
               ),
             },
           }
-        : null,
+        : {},
     [defaultValues]
   );
 
