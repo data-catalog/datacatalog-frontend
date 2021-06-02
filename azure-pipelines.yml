@@ -17,15 +17,12 @@ pool:
   vmImage: "ubuntu-latest"
 steps:
   - checkout: self
-    persistCredentials: true
+    submodules: true
 
   - task: NodeTool@0
     inputs:
       versionSpec: "12.x"
     displayName: "Install Node.js"
-
-  - script: git submodule update --recursive --init
-    displayName: "Download submodules"
 
   - script: |
       pushd $(uiSource)
