@@ -1,9 +1,9 @@
 [submodule "public/docs/user-api"]
 	path = public/docs/user-api
-	url = git@github.com:katacseke/data-catalog-user-api.git
+	url = https://github.com:katacseke/data-catalog-user-api.git
 [submodule "public/docs/asset-api"]
 	path = public/docs/asset-api
-	url = git@github.com:katacseke/data-catalog-asset-api.git
+	url = https://github.com:katacseke/data-catalog-asset-api.git
 [submodule "public/docs/versioning-api"]
 	path = public/docs/versioning-api
-	url = git@github.com:EnterRR/data-catalog-versioning-api.git
+	url = https://github.com:EnterRR/data-catalog-versioning-api.git
