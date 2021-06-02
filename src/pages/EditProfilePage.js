@@ -142,7 +142,7 @@ function ApiKeySection() {
             <tr key={key.id}>
               <td>{i + 1}</td>
               <td>{key.title}</td>
-              <td>{dayjs(key.updatedAt).format('MMMM DD, YYYY h:mm A')}</td>
+              <td>{dayjs.unix(key.createdAt).format('MMMM DD, YYYY h:mm A')}</td>
               <td className="text-center">
                 <RemoveButton variant="light" data-tip data-for={`${key.id}-tip`} onClick={() => onDeleteKey(key.id)}>
                   <MdDelete size={20} />
