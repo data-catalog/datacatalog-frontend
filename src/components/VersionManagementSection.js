@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
 // eslint-disable-next-line max-lines-per-function
 export default function VersionManagementSection({ asset, onCreateVersion }) {
   const { data, error, mutate } = useSWR(`/assets/${asset.id}/versions`, versionFetcher);
-  const versions = data?.data;
+  const versions = data?.data.sort((a, b) => dayjs(b.createdAt) - dayjs(a.createdAt));
 
   const {
     register,
@@ -101,7 +101,7 @@ export default function VersionManagementSection({ asset, onCreateVersion }) {
             <tr key={version.name}>
               <td>-</td>
               <td>{version.name}</td>
-              <td>{dayjs.unix(version.createdAt).format('MMMM DD, YYYY h:mm A')}</td>
+              <td>{dayjs(version.createdAt).format('MMMM DD, YYYY h:mm A')}</td>
               <td>
                 {canDelete ? (
                   <RemoveButton

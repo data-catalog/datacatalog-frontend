@@ -2,10 +2,16 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { Container, Card, Badge } from 'react-bootstrap';
 import { MdContentCopy } from 'react-icons/md';
+import useSWR from 'swr';
 import CopyToClipboardButton from './CopyToClipboardButton';
 import MetadataEntry from './MetadataEntry';
+import UserApi from '../apis/UserApi';
+
+const userFetcher = (url) => UserApi.get(url);
 
 export default function AssetOverviewTab({ asset }) {
+  const { data } = useSWR(`/users/${asset.ownerId}`, userFetcher);
+  const user = data?.data;
   return (
     <>
       <Card.Title>Metadata</Card.Title>
@@ -16,7 +22,7 @@ export default function AssetOverviewTab({ asset }) {
             <MdContentCopy /> Copy
           </CopyToClipboardButton>
         </MetadataEntry>
-        <MetadataEntry name="Owner">{asset.ownerId}</MetadataEntry>
+        <MetadataEntry name="Owner">{user?.username || '-'}</MetadataEntry>
         <MetadataEntry name="Visibility">Private</MetadataEntry>
         <MetadataEntry name="File type">{asset.format.toUpperCase()}</MetadataEntry>
         <MetadataEntry name="Source type">{asset.location.type}</MetadataEntry>
