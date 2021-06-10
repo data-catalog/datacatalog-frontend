@@ -79,7 +79,7 @@ export default function AssetDetailsPage() {
 
   return (
     <Page>
-      <Card className="shadow-sm">
+      <Card>
         <Card.Header as="h1">{asset.name}</Card.Header>
         <Card.Body>
           {canEdit && (

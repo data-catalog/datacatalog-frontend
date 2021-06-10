@@ -53,8 +53,8 @@ const HomePage = () => {
           <h1 className="display-4">Welcome to Data Catalog!</h1>
 
           <p className="lead">
-            Looking for the right way to magnage data? This tool will help you create and manage your datasets, and also
-            find new ones.
+            Looking for the right way to magnage data? We will help you create and manage your datasets, and also find
+            new ones.
           </p>
           <p>
             <Link to="/assets/search">
