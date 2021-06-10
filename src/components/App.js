@@ -1,20 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { NotificationsProvider, setUpNotifications } from 'reapop';
-import { AuthProvider } from '../../context/AuthContext';
-import { AuthModalProvider } from '../../context/AuthModalContext';
-import AssetDetailsPage from '../../pages/AssetDetailsPage';
-import AssetSearchPage from '../../pages/AssetSearchPage';
-import CreateAssetPage from '../../pages/CreateAssetPage';
-import DocumentationPage from '../../pages/DocumentationPage';
-import EditAssetPage from '../../pages/EditAssetPage';
-import EditProfilePage from '../../pages/EditProfilePage';
-import ErrorPage from '../../pages/ErrorPage';
-import HomePage from '../../pages/HomePage';
-import SearchUsersPage from '../../pages/SearchUsersPage';
-import UserAssetsPage from '../../pages/UserAssetsPage';
-import AuthModal from '../AuthModal';
-import ProtectedRoute from '../ProtectedRoute';
+import { AuthProvider } from '../context/AuthContext';
+import { AuthModalProvider } from '../context/AuthModalContext';
+import AssetDetailsPage from '../pages/AssetDetailsPage';
+import AssetSearchPage from '../pages/AssetSearchPage';
+import CreateAssetPage from '../pages/CreateAssetPage';
+import DocumentationPage from '../pages/DocumentationPage';
+import EditAssetPage from '../pages/EditAssetPage';
+import EditProfilePage from '../pages/EditProfilePage';
+import ErrorPage from '../pages/ErrorPage';
+import HomePage from '../pages/HomePage';
+import SearchUsersPage from '../pages/SearchUsersPage';
+import UserAssetsPage from '../pages/UserAssetsPage';
+import AuthModal from './AuthModal';
+import ProtectedRoute from './ProtectedRoute';
 
 const App = () => {
   setUpNotifications({

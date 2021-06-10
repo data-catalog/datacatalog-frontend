@@ -40,7 +40,7 @@ export default function AssetOverviewTab({ asset }) {
         ))}
       </Container>
 
-      <Container className="mt-3 bg-light rounded">
+      <Container className="mt-3 bg-light rounded px-5 py-4">
         <Card.Text dangerouslySetInnerHTML={{ __html: asset.description }} />
       </Container>
     </>

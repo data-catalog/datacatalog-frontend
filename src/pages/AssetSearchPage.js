@@ -33,7 +33,7 @@ export default function AssetSearchPage() {
     <Page>
       <h1 className="mb-3">Explore assets</h1>
       <Form onSubmit={handleSearch}>
-        <InputGroup size="lg" className="mb-5">
+        <InputGroup size="lg" className="mb-5 rounded-pill shadow-sm">
           <FormControl
             className="rounded-pill"
             name="searchTerm"
