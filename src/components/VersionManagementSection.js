@@ -120,14 +120,14 @@ export default function VersionManagementSection({ asset, onCreateVersion }) {
           ))}
           {versions?.length === 0 && (
             <tr>
-              <td colSpan={3} className="text-center text-muted">
+              <td colSpan={4} className="text-center text-muted">
                 There are no older versions of this asset.
               </td>
             </tr>
           )}
           {error && (
             <tr>
-              <td colSpan={3} className="text-center text-danger">
+              <td colSpan={4} className="text-center text-danger">
                 <div className="d-flex align-items-baseline justify-content-center">
                   Could not retrieve the older versions.
                   <Button variant="link" onClick={mutate}>

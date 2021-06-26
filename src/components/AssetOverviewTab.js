@@ -9,6 +9,11 @@ import UserApi from '../apis/UserApi';
 
 const userFetcher = (url) => UserApi.get(url);
 
+const typeMappings = {
+  url: 'URL',
+  azureblob: 'Azure Blob Storage',
+};
+
 export default function AssetOverviewTab({ asset }) {
   const { data } = useSWR(`/users/${asset.ownerId}`, userFetcher);
   const user = data?.data;
@@ -23,9 +28,9 @@ export default function AssetOverviewTab({ asset }) {
           </CopyToClipboardButton>
         </MetadataEntry>
         <MetadataEntry name="Owner">{user?.username || '-'}</MetadataEntry>
-        <MetadataEntry name="Visibility">Private</MetadataEntry>
+        <MetadataEntry name="Visibility">{asset.isPublic ? 'Public' : 'Private'}</MetadataEntry>
         <MetadataEntry name="File type">{asset.format.toUpperCase()}</MetadataEntry>
-        <MetadataEntry name="Source type">{asset.location.type}</MetadataEntry>
+        <MetadataEntry name="Source type">{typeMappings[asset.location.type] || asset.location.type}</MetadataEntry>
         <MetadataEntry name="Created at">{dayjs(asset.createdAt).format('MMMM D, YYYY hh:mm')}</MetadataEntry>
         <MetadataEntry name="Last updated at">{dayjs(asset.updatedAt).format('MMMM D, YYYY hh:mm')}</MetadataEntry>
       </Container>
