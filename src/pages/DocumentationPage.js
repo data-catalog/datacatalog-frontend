@@ -3,9 +3,9 @@ import { RedocStandalone } from 'redoc';
 import Page from '../components/Page';
 
 const docPaths = {
-  user: '/docs/user-api/User.yaml',
-  asset: '/docs/asset-api/Asset.yaml',
-  versioning: '/docs/versioning-api/VersioningApi.yaml',
+  user: '/docs/user-api/dist.yaml',
+  asset: '/docs/asset-api/dist.yaml',
+  versioning: '/docs/versioning-api/dist.yaml',
 };
 
 export default function DocumentationPage({ api }) {
