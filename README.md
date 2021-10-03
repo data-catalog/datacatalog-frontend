@@ -1,68 +1,117 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
+  <h1 align="center">Data Catalog</h1>
 
-## Available Scripts
+  <p align="center">
+    A dataset manager application aiming to ease the management of datasets coming from different sources.
+    <br />
+    <br />
+    <em><strong>Note:</strong> This is the web frontend application of the Data Catalog project. Details in the <a href="#related-projects">Related projects</a> section.</em>
+    <br />
+    <br />
+    <a href="https://datacatalogfrontend.azurewebsites.net/">View Demo</a>
+  </p>
+</div>
 
-In the project directory, you can run:
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#related-projects">Related projects</a></li>
+  </ol>
+</details>
 
-### `npm start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## About The Project
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
-### `npm test`
+Nowadays, there are more and more platforms where people can, and eventually will store data. This creates a system that is almost impossible to see through. Many times people will waste their time looking for data that is essential for their work or personal life.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The motivation behind the Data Catalog project is to create a platform where people can manage their data stored in several different locations. Moreover, the application will allow them to share data with other users, which can be ideal for coworkers or friends. So this platform would make data management easy, which would allow users to save time and energy.
 
-### `npm run build`
+### Built With
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* [React](https://reactjs.org/)
+* [Bootstrap](https://getbootstrap.com/)
+* [styled-components](https://styled-components.com/)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Getting Started
 
-### `npm run eject`
+To get a local copy up and running follow these simple steps.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Prerequisites
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* npm
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Installation
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. Clone the repo
+   ```sh
+   git clone git@github.com:data-catalog/datacatalog-frontend.git
+   ```
+   or <br/>
+   ```sh
+   git clone https://github.com/data-catalog/datacatalog-frontend.git
+   ```
 
-## Learn More
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Usage
 
-### Code Splitting
+1. Create a `.env` file based on the `.env.example`.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+2. Start the application with `npm start`.
 
-### Analyzing the Bundle Size
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+## Contact
 
-### Making a Progressive Web App
+Szilárd Tumó - tumoszilard@gmail.com
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+Project Link: [https://gitlab.com/tumoszilard/eventplanner](https://gitlab.com/tumoszilard/eventplanner)
 
-### Advanced Configuration
+## Related projects:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+The list of Data Catalog projects can be found [here](https://github.com/data-catalog).
 
-### Deployment
+- [User Service API](https://github.com/data-catalog/datacatalog-user-api)
+- [Asset Service API](https://github.com/data-catalog/datacatalog-asset-api)
+- [Versioning Service API](https://github.com/data-catalog/datacatalog-versioning-api)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
-### `npm run build` fails to minify
+- [User Service](https://github.com/data-catalog/datacatalog-user-service)
+- [Asset Service](https://github.com/data-catalog/datacatalog-asset-service)
+- [Versioning Service](https://github.com/data-catalog/datacatalog-versioning-service)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+- [Web Frontend](https://github.com/data-catalog/datacatalog-frontend)
+- [Python library](https://github.com/data-catalog/datacatalog-python-library)
+
+### Deployed applications:
+
+- [Web Frontend](https://datacatalogfrontend.azurewebsites.net/)
+- [User Service](https://userhandlingservice.azurewebsites.net/)
+- [Asset Service](https://assethandlingservice.azurewebsites.net/)
+- [Versioning Service](https://versioningservice.azurewebsites.net/)
+
+***Note**: The services sleep after 30 minutes fo inactivity. You may need to wait a couple of minutes for the applications to start.*
+

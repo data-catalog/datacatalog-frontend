@@ -1,38 +1,36 @@
-import React, { createContext, useState } from 'react';
-import Api from '../apis/api';
+import React, { createContext, useEffect, useState } from 'react';
+import jwtDecode from 'jwt-decode';
+import { cache, mutate } from 'swr';
+import UserApi from '../apis/UserApi';
 
 const AuthContext = createContext();
 
 const AuthProvider = (props) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      setUser(jwtDecode(token));
+    }
+  }, []);
 
   const login = async (data) => {
-    const response = await Api.post('users/login', JSON.stringify(data));
-
-    Api.defaults.headers.Authorization = `Bearer ${response.data.token}`;
+    const response = await UserApi.post('/users/login', JSON.stringify(data));
 
     localStorage.setItem('access_token', response.data.token);
-    localStorage.setItem('user', JSON.stringify(response.data.user));
-
-    setUser(response.data.user);
+    setUser(jwtDecode(response.data.token));
+    cache.keys().forEach((key) => mutate(key));
   };
 
   const logout = () => {
     localStorage.removeItem('access_token');
-    localStorage.removeItem('user');
-
     setUser(null);
+    cache.keys().forEach((key) => mutate(key));
   };
 
   return <AuthContext.Provider value={{ user, login, logout }} {...props} />;
 };
 
-function useAuth() {
-  const context = React.useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
-
-export { AuthProvider, useAuth };
+export default AuthContext;
+export { AuthProvider };

@@ -4,39 +4,46 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
-- development
+  - master
+  - development
 
 variables:
-  uiSource: 'src'
-  uiBuild: 'build'
+  uiSource: "src"
+  uiBuild: "build"
+  shouldDeploy: $[in(variables['Build.SourceBranch'], 'refs/heads/master', 'refs/heads/development')]
+  shouldRunAnalysis: $[in(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 pool:
-  vmImage: 'ubuntu-latest'
-
+  vmImage: "ubuntu-latest"
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '12.x'
-  displayName: 'Install Node.js'
+  - checkout: self
+    submodules: true
 
-- script: |
-    pushd $(uiSource)
-    npm install
-    npm run build
-    popd
-  displayName: 'npm install and build'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "12.x"
+    displayName: "Install Node.js"
 
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(uiBuild)'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
+  - script: |
+      pushd $(uiSource)
+      npm install
+      popd
+    displayName: "Install dependencies"
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+  - script: npm run build
+    condition: and(succeeded(), eq(variables.shouldDeploy, true))
+    displayName: "Build for production"
+  - task: ArchiveFiles@2
+    condition: and(succeeded(), eq(variables.shouldDeploy, true))
+    inputs:
+      rootFolderOrFile: "$(uiBuild)"
+      includeRootFolder: false
+      archiveType: "zip"
+      archiveFile: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip"
+      replaceExistingArchive: true
+  - task: PublishBuildArtifacts@1
+    condition: and(succeeded(), eq(variables.shouldDeploy, true))
+    inputs:
+      PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+      ArtifactName: "drop"
+      publishLocation: "Container"
